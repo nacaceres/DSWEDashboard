@@ -15,7 +15,6 @@ function App() {
         console.log("got ws data", msg);
       };
     };
-
     fetch("data")
       .then(res => res.json())
       .then(data => {
@@ -28,10 +27,21 @@ function App() {
       });
   }, []);
 
+  function auth() {
+    fetch("auth")
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+      });
+  }
+
   const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
   return (
     <div className="App">
-      <h1>Reaactive</h1>
+      <h1>Reaactive </h1>
+      <button className="btn btn-secondary" onClick={auth}>
+        Test
+      </button>
       <div> {err} </div>
       {renderDocs()}
     </div>

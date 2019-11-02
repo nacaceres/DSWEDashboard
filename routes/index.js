@@ -1,4 +1,7 @@
 const express = require("express");
+var passport = require("passport");
+var LdapStrategy = require("passport-ldapauth").Strategy;
+
 const router = express.Router();
 
 const MyMongoLib = require("../MyMongoLib.js");
@@ -16,4 +19,17 @@ router.get("/data", (req, res) => {
     .then(docs => res.send(docs))
     .catch(err => res.send({ err: true, msg: err }));
 });
+
+router.get("/auth", (req, res) => {
+  var OPTS = {
+    server: {
+      url: "ldap://adua.uniandes.edu.co:389"
+    },
+    usernameField: "af.varon@uniandes.edu.co",
+    passwordField: ""
+  };
+
+  console.log("OK?");
+});
+
 module.exports = router;
