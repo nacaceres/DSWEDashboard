@@ -13,6 +13,13 @@ router.get("/", function(req, res, next) {
 router.get("/data", (req, res) => {
   myMongoLib
     .getDocs()
+    .then(doc => res.send(doc))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+router.get("/message", (req, res) => {
+  console.log("Entro al Message");
+  myMongoLib
+    .getMessages("5dbe1c169602c70c29dbf384")
     .then(docs => res.send(docs))
     .catch(err => res.send({ err: true, msg: err }));
 });

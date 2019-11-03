@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Chat from "./Chat/Chat.jsx";
 import "./App.css";
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
       <h1>Reaactive</h1>
       <div> {err} </div>
       {renderDocs()}
+      <Chat></Chat>
     </div>
   );
 }
