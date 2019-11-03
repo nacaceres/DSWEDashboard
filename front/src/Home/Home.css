@@ -1,0 +1,13 @@
+.filaLogin{
+    height: 100%;
+    margin-top: 25vh;
+}
+.cardLogin{
+    background-color: #96acb7;
+    height: 40vh;
+
+}
+.tituloIngreso{
+    color: black;
+    font-size: 5vh;
+}
