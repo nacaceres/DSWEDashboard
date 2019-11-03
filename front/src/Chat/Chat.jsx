@@ -5,35 +5,13 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
-      complain: "",
-      answer: ""
+      value: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-  componentDidMount() {
-    let req = {};
-    req["_id"] = "5dbe6463499be42100161cab";
-    fetch("claim", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(req)
-    })
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        if (data.err) {
-          console.log("Hubo un error haciendo el fetch del reclamo");
-        } else {
-          this.setState({ complain: data.complain, answer: data.answer });
-        }
-      });
-  }
+  componentDidMount() {}
   handleChange(event) {
     this.setState({ value: event.target.value });
   }
@@ -64,12 +42,14 @@ class Chat extends Component {
     event.preventDefault();
   }
   renderMessages = () => {
-    return (
-      <div>
-        <label>{this.state.complain}</label>
-        <label>{this.state.answer}</label>
+    console.log("Los reclamos son:");
+    console.log(this.props.claims);
+    return this.props.claims.map(d => (
+      <div key={d._id}>
+        <label>{d.complain}</label>
+        <label>{d.answer}</label>
       </div>
-    );
+    ));
   };
   render() {
     return (

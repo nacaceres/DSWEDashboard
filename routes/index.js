@@ -25,7 +25,7 @@ router.post("/claim", (req, res) => {
 });
 router.post("/claims", (req, res) => {
   myMongoLib
-    .getClaimsByUser(req.body.type, req.body.user)
+    .getClaimsByUser(req.body)
     .then(docs => res.send(docs))
     .catch(err => res.send({ err: true, msg: err }));
 });
@@ -48,18 +48,18 @@ router.post("/addanswer", function(req, res) {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
-
 router.post("/login", function(req, res) {
   var options = {
-    url: "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?usuario="+req.body.username,
+    url:
+      "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?usuario=" +
+      req.body.username
   };
 
   // use the access token to access the Spotify Web API
   request.get(options, function(error, response, body) {
-    if(!error){
+    if (!error) {
       res.json(body);
-    }
-    else{
+    } else {
       res.send(error);
     }
   });

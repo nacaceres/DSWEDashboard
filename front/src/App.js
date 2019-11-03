@@ -6,38 +6,62 @@ import Home from "./Home/Home.jsx";
 import Grupo from "./Grupo/Grupo.jsx";
 import "./App.css";
 
-function App() {
-  const [docs, setDocs] = useState([]);
-  const [err, setErr] = useState("");
+function App(props) {
   const [usuario, setUsuario] = useState({
     nombre: null,
     correo: null,
-    rol: "GUEST2",
+    rol: "GUEST",
     secciones: []
   });
-
+  const [claims, setClaims] = useState([]);
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3001");
     ws.onopen = () => {
       console.log("Connected to ws");
 
       ws.onmessage = msg => {
-        setDocs(JSON.parse(msg.data));
-        console.log("got ws data", msg);
+        if (usuario.rol !== "GUEST") {
+          let copy = claims.slice();
+          let i;
+          for (i in claims) {
+            if (claims[i]._id === JSON.parse(msg.data)._id) {
+              copy[i] = JSON.parse(msg.data);
+              setClaims(copy);
+              break;
+            }
+          }
+        }
       };
     };
-    fetch("data")
+    return function closeSockets() {
+      console.log("Cerrando el socket papu");
+      ws.close();
+    };
+  }, [usuario, claims]);
+  function setLogin(usuario) {
+    setUsuario(usuario);
+    let req = usuario;
+    fetch("claims", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(req)
+    })
       .then(res => res.json())
       .then(data => {
         console.log(data);
         if (data.err) {
-          setErr(JSON.stringify(data.msg));
+          console.log("Hubo un error haciendo el fetch de los claims");
         } else {
-          setDocs(data);
+          setClaims(data);
         }
       });
-  }, []);
-
+  }
+  function irAClaims() {
+    props.history.push("/comentarios");
+  }
   function renderNav() {
     if (usuario.rol !== "GUEST") {
       return (
@@ -50,12 +74,16 @@ function App() {
               <Nav.Link>Pricing</Nav.Link>
             </Nav>
             <Nav>
-              <NavDropdown alignRight title="Dropdown" id="collasible-nav-dropdown">
+              <NavDropdown
+                alignRight
+                title="Dropdown"
+                id="collasible-nav-dropdown"
+              >
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                   Another action
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
+                <NavDropdown.Item href="#action/3.3" onClick={irAClaims}>
                   Something
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -70,7 +98,6 @@ function App() {
     }
   }
 
-  const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
   return (
     <div className="App">
       {renderNav()}
@@ -81,7 +108,7 @@ function App() {
           render={() => {
             return (
               <div>
-                <Home actualizarUsuario={setUsuario} />
+                <Home actualizarUsuario={setLogin} />
               </div>
             );
           }}
@@ -103,9 +130,7 @@ function App() {
           render={() => (
             <div>
               <h1>Reaactive </h1>
-              <div> {err} </div>
-              {renderDocs()}
-              <Chat />
+              <Chat claims={claims} />
             </div>
           )}
         />

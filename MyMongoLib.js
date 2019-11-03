@@ -3,7 +3,7 @@ let ObjectId = require("mongodb").ObjectID;
 const MyMongoLib = function() {
   const MyMongoLib = this || {};
   // Connection URL
-  const url =  "mongodb://localhost:27017";
+  const url = "mongodb://localhost:27017";
 
   // Database Name
   const dbName = "desarrolloDB";
@@ -46,23 +46,28 @@ const MyMongoLib = function() {
         return messageCol;
       });
     });
-  MyMongoLib.getClaimsByUser = (type, user) =>
+  MyMongoLib.getClaimsByUser = user =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
       conn.then(client => {
         const db = client.db(dbName);
         const testCol = db.collection("messages");
-        if (type == "student") {
+        console.log(user.rol);
+        if (user.rol === "PROFESOR" || user.rol === "MONITOR") {
+          let secciones = [];
+          let i;
+          for (i in user.secciones) {
+            secciones.push(user.secciones[i].numero);
+          }
+          console.log(secciones);
           testCol
-            .find({ student: user })
-            .limit(20)
+            .find({ section: { $in: secciones } })
             .toArray()
             .then(resolve)
             .catch(reject);
         } else {
           testCol
-            .find({})
-            .limit(20)
+            .find({ student: user.correo })
             .toArray()
             .then(resolve)
             .catch(reject);
@@ -121,8 +126,11 @@ const MyMongoLib = function() {
       const csCursor = testCol.watch();
       console.log("Listening To Changes on Mongo");
       csCursor.on("change", data => {
-        console.log("changed!", data);
-        MyMongoLib.getDocs().then(docs => cbk(JSON.stringify(docs)));
+        console.log("changed!", data.fullDocument);
+        //let list = [];
+        //list.push(data.fullDocument);
+        cbk(JSON.stringify(data.fullDocument));
+        console.log("salio");
       });
     });
   };
