@@ -15,8 +15,8 @@ const MyMongoLib = function() {
     useUnifiedTopology: true
   });
 
-  MyMongoLib.getGrupo = (seccion,grupo) => 
-    new Promise((resolve,reject) => {
+  MyMongoLib.getGrupo = (seccion, grupo) =>
+    new Promise((resolve, reject) => {
       conn.then(client => {
         const db = client.db(dbName);
         const gruposCol = db.collection("grupos");
@@ -26,15 +26,16 @@ const MyMongoLib = function() {
           .catch(reject);
 
         return gruposCol;
-      });         
+      });
     });
-  MyMongoLib.deleteGrupo = (mongoId) =>
+  MyMongoLib.deleteGrupo = mongoId =>
     new Promise((resolve, reject) => {
       conn.then(client => {
         const db = client.db(dbName);
         const gruposCol = db.collection("grupos");
         let fixId = new ObjectId(mongoId);
-        gruposCol.deleteOne({ _id: fixId })
+        gruposCol
+          .deleteOne({ _id: fixId })
           .then(resolve)
           .catch(reject);
         return gruposCol;
@@ -51,22 +52,6 @@ const MyMongoLib = function() {
           .then(resolve)
           .catch(reject);
         return gruposCol;
-      });
-    });
-  MyMongoLib.getDocs = () =>
-    new Promise((resolve, reject) => {
-      // Use connect method to connect to the Server
-      conn.then(client => {
-        const db = client.db(dbName);
-        const testCol = db.collection("test");
-
-        testCol
-          .find({})
-          .limit(20)
-          .toArray()
-          .then(resolve)
-          .catch(reject);
-        return testCol;
       });
     });
   MyMongoLib.getClaimById = mongoId =>
@@ -166,10 +151,7 @@ const MyMongoLib = function() {
       console.log("Listening To Changes on Mongo");
       csCursor.on("change", data => {
         console.log("changed!", data.fullDocument);
-        //let list = [];
-        //list.push(data.fullDocument);
         cbk(JSON.stringify(data.fullDocument));
-        console.log("salio");
       });
     });
   };

@@ -42,8 +42,6 @@ class Chat extends Component {
     event.preventDefault();
   }
   renderMessages = () => {
-    console.log("Los reclamos son:");
-    console.log(this.props.claims);
     return this.props.claims.map(d => (
       <div key={d._id}>
         <label>{d.complain}</label>

@@ -10,13 +10,7 @@ const myMongoLib = MyMongoLib();
 router.get("/", function(req, res, next) {
   res.render("index", { title: "Express" });
 });
-//Ejemplo de John Borrar cuando este listo
-router.get("/data", (req, res) => {
-  myMongoLib
-    .getDocs()
-    .then(doc => res.send(doc))
-    .catch(err => res.send({ err: true, msg: err }));
-});
+
 router.post("/claim", (req, res) => {
   myMongoLib
     .getClaimById(req.body._id)

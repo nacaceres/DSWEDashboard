@@ -17,8 +17,6 @@ function App(props) {
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3001");
     ws.onopen = () => {
-      console.log("Connected to ws");
-
       ws.onmessage = msg => {
         if (usuario.rol !== "GUEST") {
           let copy = claims.slice();
@@ -34,7 +32,6 @@ function App(props) {
       };
     };
     return function closeSockets() {
-      console.log("Cerrando el socket papu");
       ws.close();
     };
   }, [usuario, claims]);
