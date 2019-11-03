@@ -17,12 +17,7 @@ const MyMongoLib = function() {
   MyMongoLib.getDocs = () =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
-      client.connect((err, client) => {
-        if (err !== null) {
-          reject(err);
-          return;
-        }
-        console.log("Connected correctly to server");
+      conn.then(client => {
         const db = client.db(dbName);
         const testCol = db.collection("test");
 
@@ -32,30 +27,88 @@ const MyMongoLib = function() {
           .toArray()
           .then(resolve)
           .catch(reject);
-        client.close();
         return testCol;
       });
     });
-  MyMongoLib.getMessages = mongoId =>
+  MyMongoLib.getClaimById = mongoId =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
-      client.connect((err, client) => {
-        if (err !== null) {
-          reject(err);
-          return;
-        }
+      conn.then(client => {
         let fixId = new ObjectId(mongoId);
-        console.log("Connected correctly to server");
         const db = client.db(dbName);
         const messageCol = db.collection("messages");
 
-        return messageCol
+        messageCol
           .findOne({ _id: fixId })
           .then(resolve)
           .catch(reject);
+
+        return messageCol;
       });
     });
+  MyMongoLib.getClaimsByUser = (type, user) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      conn.then(client => {
+        const db = client.db(dbName);
+        const testCol = db.collection("messages");
+        if (type == "student") {
+          testCol
+            .find({ student: user })
+            .limit(20)
+            .toArray()
+            .then(resolve)
+            .catch(reject);
+        } else {
+          testCol
+            .find({})
+            .limit(20)
+            .toArray()
+            .then(resolve)
+            .catch(reject);
+        }
+        return testCol;
+      });
+    });
+  MyMongoLib.postComplain = complain =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      conn.then(client => {
+        const db = client.db(dbName);
+        const messageCol = db.collection("messages");
 
+        messageCol
+          .insertOne(complain)
+          .then(resolve)
+          .catch(reject);
+
+        return messageCol;
+      });
+    });
+  MyMongoLib.postAnswer = (mongoId, answerParam, stateParam, teacherParam) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      conn.then(client => {
+        const db = client.db(dbName);
+        const messageCol = db.collection("messages");
+        let fixId = new ObjectId(mongoId);
+        messageCol
+          .updateOne(
+            { _id: fixId },
+            {
+              $set: {
+                answer: answerParam,
+                state: stateParam,
+                teacher: teacherParam
+              }
+            }
+          )
+          .then(resolve)
+          .catch(reject);
+
+        return messageCol;
+      });
+    });
   MyMongoLib.listenToChanges = cbk => {
     client.connect((err, client) => {
       if (err !== null) {
@@ -63,7 +116,7 @@ const MyMongoLib = function() {
       }
       console.log("Connected correctly to server");
       const db = client.db(dbName);
-      const testCol = db.collection("test");
+      const testCol = db.collection("messages");
 
       const csCursor = testCol.watch();
       console.log("Listening To Changes on Mongo");

@@ -14,12 +14,21 @@ class Chat extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount() {
-    fetch("message")
+    let req = {};
+    req["_id"] = "5dbe6463499be42100161cab";
+    fetch("claim", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(req)
+    })
       .then(res => res.json())
       .then(data => {
         console.log(data);
         if (data.err) {
-          console.log("Hubo un error haciendo el fetch de los datos");
+          console.log("Hubo un error haciendo el fetch del reclamo");
         } else {
           this.setState({ complain: data.complain, answer: data.answer });
         }
@@ -30,7 +39,28 @@ class Chat extends Component {
   }
 
   handleSubmit(event) {
-    alert("A name was submitted: " + this.state.value);
+    let req = {};
+    req["_id"] = "5dbe6463499be42100161cab";
+    req["answer"] = this.state.value;
+    req["teacher"] = "rcasalla@uniandes.edu.co";
+    req["state"] = "Aceptado";
+    fetch("addanswer", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(req)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.err) {
+          console.log("Hubo un error haciendo el post de la respuesta");
+        } else {
+          this.setState({ answer: this.state.value });
+        }
+      });
     event.preventDefault();
   }
   renderMessages = () => {
