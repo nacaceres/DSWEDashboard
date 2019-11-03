@@ -12,7 +12,8 @@ function App() {
   const [usuario, setUsuario] = useState({
     nombre: null,
     correo: null,
-    rol: "GUEST2"
+    rol: "GUEST2",
+    secciones: []
   });
 
   useEffect(() => {
@@ -41,16 +42,15 @@ function App() {
     if (usuario.rol !== "GUEST") {
       return (
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Desarrollo de Software en Equipo</Navbar.Brand>
+          <Navbar.Brand>Desarrollo de Software en Equipo</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#features">Features</Nav.Link>
-              <Nav.Link href="#pricing">Pricing</Nav.Link>
-              
+              <Nav.Link>Features</Nav.Link>
+              <Nav.Link>Pricing</Nav.Link>
             </Nav>
             <Nav>
-              <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+              <NavDropdown alignRight title="Dropdown" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                   Another action
@@ -72,7 +72,7 @@ function App() {
 
   const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
   return (
-    <div className="App container-fluid">
+    <div className="App">
       {renderNav()}
       <Switch>
         <Route
