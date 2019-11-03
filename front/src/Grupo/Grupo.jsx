@@ -14,9 +14,34 @@ function Grupo(props) {
   }
 
   useEffect(() => {
-
     if(props.match.params.length === 0 || props.match.params.seccion === undefined || props.match.params.seccion === 0 || props.match.params.grupo === undefined || props.match.params.grupo === null){
+      props.history.push("/");
+    }else{
+      let encontrado = false;
+      props.usuario.secciones.forEach(seccion=>{
+        if(seccion.numero === parseInt(props.match.params.seccion)){
+          encontrado = true;
+        }
+      });
+      let encontrado2 = false;
+      props.usuario.secciones.forEach(seccion=>{
+        seccion.grupos.forEach(grupo =>{
+          if(grupo === props.match.params.grupo){
+            encontrado2 = true;
+          }
+        });
+      })
+      if(!(encontrado && encontrado)){
         props.history.push("/");
+      }else{
+        console.log("ok");
+        fetch("/grupo?seccion="+props.match.params.seccion+"&grupo="+props.match.params.grupo)
+        .then(res => res.json())
+        .then(data => {
+          console.log("ahhh");
+          console.log(data);
+        });
+      }
     }
     //Revisar permisos
   });
