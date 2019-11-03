@@ -1,5 +1,7 @@
 const MongoClient = require("mongodb").MongoClient;
 let ObjectId = require("mongodb").ObjectID;
+
+
 const MyMongoLib = function() {
   const MyMongoLib = this || {};
   // Connection URL
@@ -28,14 +30,13 @@ const MyMongoLib = function() {
         return gruposCol;
       });
     });
-  MyMongoLib.deleteGrupo = mongoId =>
+  MyMongoLib.deleteGrupo = (seccion, grupo) =>
     new Promise((resolve, reject) => {
       conn.then(client => {
         const db = client.db(dbName);
         const gruposCol = db.collection("grupos");
-        let fixId = new ObjectId(mongoId);
         gruposCol
-          .deleteOne({ _id: fixId })
+          .deleteMany({ numero: seccion, "grupo.nombre": grupo })
           .then(resolve)
           .catch(reject);
         return gruposCol;
@@ -138,7 +139,7 @@ const MyMongoLib = function() {
         return messageCol;
       });
     });
-  MyMongoLib.listenToChanges = cbk => {
+  MyMongoLib.listenToChanges = (cbk,inicial) => {
     client.connect((err, client) => {
       if (err !== null) {
         throw err;
@@ -149,12 +150,18 @@ const MyMongoLib = function() {
 
       const csCursor = testCol.watch();
       console.log("Listening To Changes on Mongo");
+      inicial();
       csCursor.on("change", data => {
         console.log("changed!", data.fullDocument);
         cbk(JSON.stringify(data.fullDocument));
       });
     });
   };
+  MyMongoLib.autoUpdate = (hrs) =>{
+    console.log("STARTED");
+
+  }
+
   return MyMongoLib;
 };
 module.exports = MyMongoLib;
