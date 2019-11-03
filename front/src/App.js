@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
 import Chat from "./Chat/Chat.jsx";
 import "./App.css";
 
@@ -28,24 +29,31 @@ function App() {
       });
   }, []);
 
-  function auth() {
-    fetch("auth")
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-      });
-  }
-
   const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
   return (
     <div className="App">
-      <h1>Reaactive </h1>
-      <button className="btn btn-secondary" onClick={auth}>
-        Test
-      </button>
-      <div> {err} </div>
-      {renderDocs()}
-      <Chat></Chat>
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => {
+            return (
+              <div>
+                <h1>Reaactive </h1>
+                <div> {err} </div>
+                {renderDocs()}
+                <Chat />
+              </div>
+            );
+          }}
+        />
+        <Route
+          path="/grupos/:seccion/:nombre"
+          render={() => (
+            <div></div> //Cambiar esto por el componente que quiera.
+          )}
+        />
+      </Switch>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import "./Chat.css";
-export default class Chat extends Component {
+class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -59,3 +60,4 @@ export default class Chat extends Component {
     );
   }
 }
+export default withRouter(Chat);
