@@ -3,7 +3,7 @@ let ObjectId = require("mongodb").ObjectID;
 const MyMongoLib = function() {
   const MyMongoLib = this || {};
   // Connection URL
-  const url = process.env.MONGO_URL || "mongodb://localhost:27017";
+  const url =  "mongodb://localhost:27017";
 
   // Database Name
   const dbName = "desarrolloDB";
