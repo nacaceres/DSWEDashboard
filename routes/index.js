@@ -48,6 +48,43 @@ router.post("/addanswer", function(req, res) {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
+router.get("/grupo", (req, res) => {
+  if (req.query && req.query.seccion && req.query.grupo) {
+    let seccion = parseInt(req.query.seccion);
+    let grupo = req.query.grupo;
+    myMongoLib
+      .getGrupo(seccion, grupo)
+      .then(info => {
+        if (info === null) {
+          var options = {
+            url:
+              "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?seccion=" +
+              seccion +
+              "&grupo=" +
+              grupo
+          };
+          request.get(options, function(error, response, body) {
+            if (!error) {
+              var grupoJSON = JSON.parse(body).seccion;
+              myMongoLib
+                .postGrupo(grupoJSON)
+                .then(docs => res.json(grupoJSON))
+                .catch(err => res.send({ err: true, msg: err }));
+            } else {
+              res.send(error);
+            }
+          });
+        } else {
+          console.log("existe");
+          res.json(info);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+});
+
 router.post("/login", function(req, res) {
   var options = {
     url:

@@ -14,6 +14,45 @@ const MyMongoLib = function() {
     useNewUrlParser: true,
     useUnifiedTopology: true
   });
+
+  MyMongoLib.getGrupo = (seccion,grupo) => 
+    new Promise((resolve,reject) => {
+      conn.then(client => {
+        const db = client.db(dbName);
+        const gruposCol = db.collection("grupos");
+        gruposCol
+          .findOne({ numero: seccion, "grupo.nombre": grupo })
+          .then(resolve)
+          .catch(reject);
+
+        return gruposCol;
+      });         
+    });
+  MyMongoLib.deleteGrupo = (mongoId) =>
+    new Promise((resolve, reject) => {
+      conn.then(client => {
+        const db = client.db(dbName);
+        const gruposCol = db.collection("grupos");
+        let fixId = new ObjectId(mongoId);
+        gruposCol.deleteOne({ _id: fixId })
+          .then(resolve)
+          .catch(reject);
+        return gruposCol;
+      });
+    });
+  MyMongoLib.postGrupo = grupo =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      conn.then(client => {
+        const db = client.db(dbName);
+        const gruposCol = db.collection("grupos");
+        gruposCol
+          .insertOne(grupo)
+          .then(resolve)
+          .catch(reject);
+        return gruposCol;
+      });
+    });
   MyMongoLib.getDocs = () =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
