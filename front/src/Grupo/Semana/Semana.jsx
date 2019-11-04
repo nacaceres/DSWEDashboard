@@ -224,21 +224,40 @@ class Semana extends React.Component {
   };
 
   renderTeamworkIndividual = (grupo, nombre) => {
+    let usuario = this.props.usuario;
     return grupo.map(semanal => {
-      return (
-        <Teamwork
-          key={
-            "TEAMWORKINDIVIDUAL" +
-            nombre +
-            this.props.semana.nombre +
-            this.nombre +
-            semanal.nombre
-          }
-          usuario={this.props.usuario}
-          teamwork={semanal}
-          crearComentario={this.props.crearComentario}
-        />
-      );
+      if (
+        usuario.rol === "PROFESOR" ||
+        usuario.rol === "MONITOR" ||
+        (usuario.rol === "ESTUDIANTE" && semanal.correo === usuario.correo)
+      ) {
+        return (
+          <Teamwork
+            key={
+              "TEAMWORKINDIVIDUAL" +
+              nombre +
+              this.props.semana.nombre +
+              this.nombre +
+              semanal.nombre
+            }
+            usuario={this.props.usuario}
+            teamwork={semanal}
+            crearComentario={this.props.crearComentario}
+          />
+        );
+      } else {
+        return (
+          <div
+            key={
+              "TEAMWORKINDIVIDUAL" +
+              nombre +
+              this.props.semana.nombre +
+              this.nombre +
+              semanal.nombre
+            }
+          ></div>
+        );
+      }
     });
   };
 
