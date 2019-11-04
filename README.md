@@ -1,6 +1,6 @@
 # DSWEDashboard (SIC)
 Una página web que contiene el estado de los proyectos que se estan llevando a cabo en el curso Desarrollo de Software en equipo, ofrecido por el Dpto de Ing de sistemas y computación de la Universidad de los Andes.   
-Dentro de la pagina se puede: Consultar el estado del proyecto en herramientas como SonarCube, Jenkins, Teamwork, Git inspector, entre otras. Además, los estudiantes pueden realizar comentarios sobre feedback que se le ha dado sobre sus proyectos y los profesores o monitores del curso podran contestar estos comentarios.
+Dentro de la pagina se puede: Consultar el estado del proyecto en herramientas como Sonarqube, Jenkins, Teamwork, Git inspector, entre otras. Además, los estudiantes pueden realizar comentarios sobre feedback que se le ha dado sobre sus proyectos y los profesores o monitores del curso podran contestar estos comentarios.
 # ScreenShot
 ![Screenshot Pag Web](https://raw.githubusercontent.com/nacaceres/CriticaVisualizacion/master/SIC_Principal.png)
 # Link a la página del proyecto   
@@ -15,7 +15,7 @@ TODO
 * Node.js
 * MongoDB
 * Express
-* SonarCube
+* Sonarqube
 * Git Inspector
 * Jenkins
 * Google Sheets
