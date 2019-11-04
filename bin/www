@@ -38,7 +38,7 @@ let refreshGrupos = secciones => {
   let numero = 0;
   for (let index = 0; index < secciones.length; index++) {
     let seccion = secciones[index];
-    numero =  seccion.numero;
+    numero = seccion.numero;
     if (seccion.grupos.length > 0) {
       grupo = seccion.grupos.pop();
       break;
@@ -46,7 +46,6 @@ let refreshGrupos = secciones => {
   }
 
   if (grupo !== null && numero !== 0) {
-
     var options = {
       url:
         "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?seccion=" +
@@ -57,23 +56,25 @@ let refreshGrupos = secciones => {
     request.get(options, function(error, response, body) {
       if (!error) {
         var grupoJSON = JSON.parse(body).seccion;
-        myMongoLib.deleteGrupo(numero,grupo).then((docs)=>{
-          if(grupoJSON){
-            myMongoLib
-            .postGrupo(grupoJSON)
-            .then(docs => {
+        myMongoLib
+          .deleteGrupo(numero, grupo)
+          .then(docs => {
+            if (grupoJSON) {
+              myMongoLib
+                .postGrupo(grupoJSON)
+                .then(docs => {
+                  refreshGrupos(secciones);
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            } else {
               refreshGrupos(secciones);
-            })
-            .catch(err =>{
-              console.log(err);
-            });
-          }
-          else{
-            refreshGrupos(secciones);
-          }
-        }).catch(err => {
-          console.log(err);
-        });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       } else {
         console.log(error);
       }
@@ -93,7 +94,7 @@ let refrescar = () => {
       var secciones = JSON.parse(body).secciones;
       refreshGrupos(secciones);
     } else {
-      res.send(error);
+      console.log(error);
     }
   });
 };

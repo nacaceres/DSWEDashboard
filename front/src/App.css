@@ -1,3 +1,7 @@
-.NavInicial{
-    background-color: #4f6367;
+.NavInicial {
+  background-color: #4f6367;
+}
+.App {
+  background-color: #477998;
+  height: 100vh;
 }
