@@ -9,6 +9,62 @@ class Semana extends React.Component {
       open: false
     };
   }
+  renderNota = nota => {
+    let color = "red";
+    if (nota > 2) {
+      color = "orange";
+    }
+    if (nota > 3) {
+      color = "yellow";
+    }
+    if (nota > 4) {
+      color = "green";
+    }
+    return <div style={{ backgroundColor: color }} className="notaCont"></div>;
+  };
+
+  renderGrupales = () => {
+    return this.props.semana.feedback.preguntasGrupales.map(pregunta => {
+      return (
+        <div
+          className="row filaPreguntaGrupal"
+          key={this.props.semana.nombre + pregunta.pregunta}
+        >
+          <div className="col-8">{pregunta.pregunta}</div>
+          <div className="col-2">{this.renderNota(pregunta.nota)}</div>
+          <div
+            className="col-1 addComment"
+            onClick={() => {
+              //this.props.enviarMensaje("FEEDBACK", pregunta);
+            }}
+          >
+            <i class="fas fa-comment-medical"></i>
+          </div>
+          <div className="col-1"></div>
+        </div>
+      );
+    });
+  };
+  ss;
+
+  renderFeedbacks = () => {
+    if (this.props.semana.feedback.preguntasGrupales.length > 0) {
+      return (
+        <div>
+          <div className="row text-center">
+            <div className="titleGrupales"> Grupales</div>
+          </div>
+          {this.renderGrupales()}
+        </div>
+      );
+    } else {
+      return <div className="infoFail">No hubo Feedback</div>;
+    }
+  };
+
+  renderTeamwork = () => {
+    return <div></div>;
+  };
 
   renderBody = () => {
     if (this.state.open) {
@@ -18,14 +74,14 @@ class Semana extends React.Component {
             <div className="row">
               <div className="titlesSemana">Feedback:</div>
             </div>
-            <div className="row"></div>
+            {this.renderFeedbacks()}
           </div>
           <hr className="hrSemana" />
           <div className="teamwork">
             <div className="row">
               <div className="titlesSemana">Teamwork:</div>
             </div>
-            <div className="row"></div>
+            <div className="row text-center">{this.renderTeamwork()}</div>
           </div>
         </div>
       );
