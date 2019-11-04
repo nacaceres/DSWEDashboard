@@ -86,11 +86,13 @@ class Home extends React.Component {
                   <InputGroup className="inputLogin">
                     <div className="row mx-auto">
                       <FormControl
+                        autoFocus
                         className="loginImp"
                         placeholder="Correo"
                         aria-label="Correo"
                         value={this.state.username}
                         onChange={this.handleChange.bind(this)}
+                        onKeyDown={this.handleKey.bind(this)}
                       />
                     </div>
                     <div className="row mx-auto">

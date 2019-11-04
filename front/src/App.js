@@ -13,6 +13,11 @@ function App(props) {
     rol: "GUEST",
     secciones: []
   });
+  const [actual, setActual] = useState({
+    numero: 0,
+    grupo: null
+  });
+
   const [claims, setClaims] = useState([]);
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3001");
@@ -58,6 +63,10 @@ function App(props) {
   }, [usuario, claims]);
   function setLogin(usuario) {
     setUsuario(usuario);
+    setActual({
+      numero: usuario.secciones[0].numero,
+      grupo: usuario.secciones[0].grupos[0]
+    });
     let req = usuario;
     fetch("claims", {
       method: "POST",
@@ -69,7 +78,6 @@ function App(props) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         if (data.err) {
           console.log("Hubo un error haciendo el fetch de los claims");
         } else {
@@ -90,6 +98,103 @@ function App(props) {
   function irAClaims() {
     props.history.push("/comentarios");
   }
+
+  function renderGrupos(seccion) {
+    return seccion.grupos.map(grupo => {
+      let idGrupo =
+        "collasible-nav-dropdown-seccion-" + seccion.numero + "-" + grupo;
+      if (actual.grupo === grupo) {
+        return (
+          <NavDropdown.Item
+            className="dropDownItem dropDownItemSelected"
+            key={idGrupo}
+            onClick={() => {
+              setActual({
+                numero: seccion.numero,
+                grupo: grupo
+              });
+              props.history.push("/grupos/" + seccion.numero + "/" + grupo);
+            }}
+          >
+            {grupo}
+          </NavDropdown.Item>
+        );
+      } else {
+        return (
+          <NavDropdown.Item
+            className="dropDownItem"
+            key={idGrupo}
+            onClick={() => {
+              setActual({
+                numero: seccion.numero,
+                grupo: grupo
+              });
+              props.history.push("/grupos/" + seccion.numero + "/" + grupo);
+            }}
+          >
+            {grupo}
+          </NavDropdown.Item>
+        );
+      }
+    });
+  }
+
+  function renderSecciones() {
+    return usuario.secciones.map(seccion => {
+      let nombreSeccion = "Seccion " + seccion.numero;
+      let idSeccion = "collasible-nav-dropdown-seccion-" + seccion.numero;
+      if (seccion.grupos.length > 1) {
+        if (actual.numero === seccion.numero) {
+          return (
+            <NavDropdown
+              className="dropDownSeccion selectedSeccion text-center"
+              title={nombreSeccion}
+              key={idSeccion}
+            >
+              {renderGrupos(seccion)}
+            </NavDropdown>
+          );
+        } else {
+          return (
+            <NavDropdown
+              className="dropDownSeccion text-center"
+              title={nombreSeccion}
+              key={idSeccion}
+            >
+              {renderGrupos(seccion)}
+            </NavDropdown>
+          );
+        }
+      } else {
+        return <div></div>;
+      }
+    });
+  }
+
+  function renderUserMenu() {
+    return (
+      <NavDropdown alignRight title={usuario.nombre} id="collasible-nav-user">
+        <NavDropdown.Item href="#action/3.3" onClick={irAClaims}>
+          Comentarios
+        </NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item
+          onClick={() => {
+            setUsuario({
+              nombre: null,
+              correo: null,
+              rol: "GUEST",
+              secciones: []
+            });
+            props.history.push("/");
+          }}
+        >
+          Salir
+        </NavDropdown.Item>
+      </NavDropdown>
+    );
+  }
+
   function renderNav() {
     if (usuario.rol !== "GUEST") {
       return (
@@ -97,29 +202,8 @@ function App(props) {
           <Navbar.Brand>Desarrollo de Software en Equipo</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link>Features</Nav.Link>
-              <Nav.Link>Pricing</Nav.Link>
-            </Nav>
-            <Nav>
-              <NavDropdown
-                alignRight
-                title="Dropdown"
-                id="collasible-nav-dropdown"
-              >
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3" onClick={irAClaims}>
-                  Something
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.4">
-                  Separated link
-                </NavDropdown.Item>
-              </NavDropdown>
-            </Nav>
+            <Nav className="mr-auto">{renderSecciones()}</Nav>
+            <Nav>{renderUserMenu()}</Nav>
           </Navbar.Collapse>
         </Navbar>
       );
@@ -129,7 +213,7 @@ function App(props) {
   return (
     <div className="App">
       {renderNav()}
-      <Switch>
+      <Switch className="container-fluid">
         <Route
           exact
           path="/"

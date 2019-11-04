@@ -5,3 +5,25 @@
   background-color: #477998;
   height: 100vh;
 }
+
+.caret {
+  display: none;
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.dropDownSeccion {
+  width: 10vw;
+  font-weight: bold;
+  text-align: center;
+}
+
+.selectedSeccion {
+  text-shadow: 0 0 #ffffff, 0 0 #ffffff, 0 0 #ffffff, 0 0 #ffffff;
+}
+
+.dropDownItemSelected {
+  font-weight: bold;
+}
