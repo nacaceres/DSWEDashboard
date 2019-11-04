@@ -9,8 +9,10 @@ function Grupo(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [infoGrupo, setInfoGrupo] = React.useState(null);
   const [commentario, setCommentario] = React.useState("");
+  const [feedback, setFeedback] = React.useState("");
 
   function crearComentario(tipo, valor) {
+    setFeedback(valor);
     setModalShow(true);
   }
 
@@ -18,7 +20,32 @@ function Grupo(props) {
     setModalShow(false);
   }
 
-  function handelConfirm() {}
+  function handelConfirm() {
+    let req = {};
+    req["id_feedback"] = "123456789";
+    req["complain"] = commentario;
+    req["student"] = props.usuario.correo;
+    req["section"] = props.usuario.secciones[0].numero;
+    console.log(req);
+    fetch("/addclaim", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(req)
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        if (data.err) {
+          console.log("Hubo un error haciendo el post del reclamo");
+        } else {
+          //alert("Tu comentario ha sido enviado exitosamente!");
+        }
+      });
+    setModalShow(false);
+  }
 
   useEffect(() => {
     if (

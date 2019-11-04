@@ -90,7 +90,6 @@ function App(props) {
             }
             return 0;
           });
-          console.log(data);
           setClaims(data);
         }
       });
