@@ -5,11 +5,16 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: ""
+      value: "",
+      chat: false,
+      complain: "",
+      answer: "",
+      id: ""
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.activateChat = this.activateChat.bind(this);
   }
   componentDidMount() {}
   handleChange(event) {
@@ -18,10 +23,10 @@ class Chat extends Component {
 
   handleSubmit(event) {
     let req = {};
-    req["_id"] = "5dbe6463499be42100161cab";
+    req["_id"] = this.state.id;
     req["answer"] = this.state.value;
     req["teacher"] = "rcasalla@uniandes.edu.co";
-    req["state"] = "Aceptado";
+    req["state"] = "Contestado";
     fetch("addanswer", {
       method: "POST",
       headers: {
@@ -41,29 +46,98 @@ class Chat extends Component {
       });
     event.preventDefault();
   }
+  activateChat(idParam, complainParam, answerParam) {
+    this.setState({
+      chat: true,
+      complain: complainParam,
+      answer: answerParam,
+      id: idParam
+    });
+  }
+  renderChat() {
+    if (this.state.chat) {
+      return (
+        <div>
+          <div className="board">
+            <div className="complain">
+              <p>{this.state.complain}</p>
+            </div>
+
+            <div className="answer">
+              <p>{this.state.answer}</p>
+            </div>
+          </div>
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Respuesta al reclamo"
+              aria-label="Respuesta al reclamo"
+              aria-describedby="button-addon2"
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+            <div className="input-group-append">
+              <button
+                className="btn btn-primary"
+                type="button"
+                id="button-addon2"
+                onClick={this.handleSubmit}
+              >
+                Enviar
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  }
+  renderButton(state) {
+    if (state === "Pendiente") {
+      return "Responder";
+    } else {
+      return "Modificar";
+    }
+  }
   renderMessages = () => {
     return this.props.claims.map(d => (
-      <div key={d._id}>
-        <label>{d.complain}</label>
-        <label>{d.answer}</label>
-      </div>
+      <tr key={d.id_feedback}>
+        <th scope="row">{d.id_feedback}</th>
+        <td>{d.state}</td>
+        <td>{d.section}</td>
+        <td>{d.student}</td>
+        <td>
+          <button
+            className="btn btn-primary"
+            onClick={() => this.activateChat(d._id, d.complain, d.answer)}
+          >
+            {this.renderButton(d.state)}
+          </button>
+        </td>
+      </tr>
     ));
   };
   render() {
     return (
-      <div>
-        {this.renderMessages()}
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Message:
-            <input
-              type="text"
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
+      <div className="row screen">
+        <div className="list col-sm-6">
+          <h1>Reclamos</h1>
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">idFeedback</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Seccion</th>
+                <th scope="col">Estudiante</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>{this.renderMessages()}</tbody>
+          </table>
+        </div>
+        <div className="list col-sm-1"> </div>
+        <div className="list col-sm-4">{this.renderChat()}</div>
+        <div className="list col-sm-1"> </div>
       </div>
     );
   }

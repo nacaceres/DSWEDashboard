@@ -150,8 +150,11 @@ const MyMongoLib = function() {
       const csCursor = testCol.watch();
       console.log("Listening To Changes on Mongo");
       csCursor.on("change", data => {
-        console.log("changed!", data.fullDocument);
-        cbk(JSON.stringify(data.fullDocument));
+        //console.log("Cambios", data);
+        console.log("Document changed: ", data.documentKey._id);
+        MyMongoLib.getClaimById(data.documentKey._id).then(docs =>
+          cbk(JSON.stringify(docs))
+        );
       });
     });
   };

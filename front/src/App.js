@@ -20,12 +20,31 @@ function App(props) {
       ws.onmessage = msg => {
         if (usuario.rol !== "GUEST") {
           let copy = claims.slice();
+          let update = JSON.parse(msg.data);
           let i;
           for (i in claims) {
-            if (claims[i]._id === JSON.parse(msg.data)._id) {
-              copy[i] = JSON.parse(msg.data);
+            if (claims[i]._id === update._id) {
+              console.log("Entro al primer caso");
+              copy[i] = update;
               setClaims(copy);
               break;
+            }
+          }
+          if (usuario.rol === "PROFESOR" || usuario.rol === "MONITOR") {
+            let j;
+            for (j in usuario.secciones) {
+              if (usuario.secciones[j].numero === update.section) {
+                console.log("Entro al segundo caso");
+                copy.push(update);
+                setClaims(copy);
+                break;
+              }
+            }
+          } else {
+            if (update.student === usuario.correo) {
+              console.log("Entro al tercero caso");
+              copy.push(update);
+              setClaims(copy);
             }
           }
         }
@@ -126,8 +145,7 @@ function App(props) {
           path="/comentarios"
           render={() => (
             <div>
-              <h1>Reaactive </h1>
-              <Chat claims={claims} />
+              <Chat claims={claims} rol={usuario.rol} />
             </div>
           )}
         />
