@@ -1,8 +1,8 @@
 # DSWEDashboard (SIC)
-TODO descripcion
-Dentro de la pagina podrás: TODO.
+Una página web que contiene el estado de los proyectos que se estan llevando a cabo en el curso Desarrollo de Software en equipo, ofrecido por el Dpto de Ing de sistemas y computación de la Universidad de los Andes.   
+Dentro de la pagina se puede: Consultar el estado del proyecto en herramientas como SonarCube, Jenkins, Teamwork, Git inspector, entre otras. Además, los estudiantes pueden realizar comentarios sobre feedback que se le ha dado sobre sus proyectos y los profesores o monitores del curso podran contestar estos comentarios.
 # ScreenShot
-TODO
+![Screenshot Pag Web](https://raw.githubusercontent.com/nacaceres/CriticaVisualizacion/master/SIC_Principal.png)
 # Link a la página del proyecto   
 TODO
 # Tecnologias usadas
@@ -15,7 +15,11 @@ TODO
 * Node.js
 * MongoDB
 * Express
-* Trinket
+* SonarCube
+* Git Inspector
+* Jenkins
+* Google Sheets
+* Web Sockets
 
 # Despliegue
 
@@ -46,7 +50,7 @@ yarn install
 ```
 yarn start
 ```
-*Obs. la conexion a la base de datos esta con una variable de entorno. Para configurarla siga el ejemplo correspondiente a seguir:
+*Obs. la conexion a la base de datos esta con una variable de entorno. Para configurarla siga el ejemplo correspondiente:
 ### Windows
 ```
 SET MONGOLAB_URI=mongodb://{username}:{password}@cluster0-shard-00-00-2gfpv.mongodb.net:27017,cluster0-shard-00-01-2gfpv.mongodb.net:27017,cluster0-shard-00-02-2gfpv.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority
@@ -55,16 +59,20 @@ SET MONGOLAB_URI=mongodb://{username}:{password}@cluster0-shard-00-00-2gfpv.mong
 ```
 export MONGOLAB_URI="mongodb://{username}:{password}@cluster0-shard-00-00-2gfpv.mongodb.net:27017,cluster0-shard-00-01-2gfpv.mongodb.net:27017,cluster0-shard-00-02-2gfpv.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority”
 ```
-### Heroku
+En caso de tener una base de datos MongoDB local, se debe correr con el comando:
 ```
-heroku config:set MONGOLAB_URI=“mongodb://{username}:{password}@cluster0-shard-00-00-2gfpv.mongodb.net:27017,cluster0-shard-00-01-2gfpv.mongodb.net:27017,cluster0-shard-00-02-2gfpv.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority”
+mongod --replSet "rs"
 ```
-Para desplegar el proyecto en heroku desde git, puedes seguir las siguientes instrucciones: https://devcenter.heroku.com/articles/git
+En caso de no tener configurada la BD con replica, en una nueva terminal se deben correr los comandos:
+```
+mongo
+rs.initiate()
+```
 # Requerimientos como desarrollador
 El proyecto tiene una dependencia como desarrollador hacia [eslint](https://eslint.org), esta dependencia se encarga de revisar la sintaxis del codigo en JS bajo la reglas definidas en el archivo [.eslintrc.js]
 
 ```
-cd cupitips
+cd DSWEDashboard
 yarn install
 eslint App.js
 ```
@@ -73,4 +81,4 @@ eslint App.js
 [Andrés Varón Maya](https://github.com/andresvaron)
 
 # Licencia
-Este proyecto está bajo MIT public license. Se pueden econtrar [aqui](https://github.com/nacaceres/cupitips/blob/master/LICENSE).
+Este proyecto está bajo MIT public license. Se pueden econtrar [aqui](https://github.com/nacaceres/DSWEDashboard/blob/master/LICENSE).
