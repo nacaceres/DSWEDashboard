@@ -9,10 +9,13 @@ function Grupo(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [infoGrupo, setInfoGrupo] = React.useState(null);
   const [commentario, setCommentario] = React.useState("");
-  const [feedback, setFeedback] = React.useState("");
+  const [id, setId] = React.useState("");
 
-  function crearComentario(tipo, valor) {
-    setFeedback(valor);
+  function crearComentario(tipo, val) {
+    if (tipo === "FEEDBACK") {
+      val.id = infoGrupo.numero + "-" + infoGrupo.grupo.nombre + "" + val.id;
+    }
+    setId(val.id);
     setModalShow(true);
   }
 
@@ -22,7 +25,7 @@ function Grupo(props) {
 
   function handelConfirm() {
     let req = {};
-    req["id_feedback"] = "123456789";
+    req["id_feedback"] = id;
     req["complain"] = commentario;
     req["student"] = props.usuario.correo;
     req["section"] = props.usuario.secciones[0].numero;
@@ -75,7 +78,7 @@ function Grupo(props) {
             }
           });
         });
-        if (!(encontrado && encontrado)) {
+        if (!(encontrado && encontrado2)) {
           props.history.push("/");
         } else {
           fetch(
@@ -108,7 +111,11 @@ function Grupo(props) {
               semana.nombre
             }
           >
-            <Semana crearComentario={crearComentario} semana={semana}></Semana>
+            <Semana
+              usuario={props.usuario}
+              crearComentario={crearComentario}
+              semana={semana}
+            ></Semana>
           </div>
         );
       } else {

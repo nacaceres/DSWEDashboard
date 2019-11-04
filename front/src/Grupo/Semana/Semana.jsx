@@ -1,6 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import "./Semana.css";
+import Teamwork from "./Teamwork/Teamwork.jsx";
 
 class Semana extends React.Component {
   constructor(props) {
@@ -9,6 +10,7 @@ class Semana extends React.Component {
       open: false
     };
   }
+
   renderNota = nota => {
     let color = "red";
     if (nota > 2) {
@@ -24,37 +26,196 @@ class Semana extends React.Component {
   };
 
   renderGrupales = () => {
-    return this.props.semana.feedback.preguntasGrupales.map(pregunta => {
-      return (
-        <div
-          className="row filaPreguntaGrupal"
-          key={this.props.semana.nombre + pregunta.pregunta}
-        >
-          <div className="col-8">{pregunta.pregunta}</div>
-          <div className="col-2">{this.renderNota(pregunta.nota)}</div>
-          <div
-            className="col-1 addComment"
-            onClick={() => {
-              this.props.crearComentario("FEEDBACK", pregunta);
-            }}
-          >
-            <i className="fas fa-comment-medical"></i>
-          </div>
-          <div className="col-1"></div>
-        </div>
-      );
-    });
-  };
-  ss;
-
-  renderFeedbacks = () => {
-    if (this.props.semana.feedback.preguntasGrupales.length > 0) {
+    if (
+      this.props.semana.feedback.preguntasGrupales !== undefined &&
+      this.props.semana.feedback.preguntasGrupales.length > 0
+    ) {
       return (
         <div>
           <div className="row text-center">
             <div className="titleGrupales"> Grupales</div>
           </div>
+          {this.props.semana.feedback.preguntasGrupales.map(pregunta => {
+            if (this.props.usuario.rol !== "ESTUDIANTE") {
+              return (
+                <div
+                  className="row filaPreguntaGrupal"
+                  key={this.props.semana.nombre + pregunta.pregunta}
+                >
+                  <div className="col-6">{pregunta.pregunta}</div>
+                  <div className="col-2">{this.renderNota(pregunta.nota)}</div>
+                  <div className="col-4">{pregunta.commentario}</div>
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  className="row filaPreguntaGrupal"
+                  key={this.props.semana.nombre + pregunta.pregunta}
+                >
+                  <div className="col-8">{pregunta.pregunta}</div>
+                  <div className="col-2">{this.renderNota(pregunta.nota)}</div>
+                  <div
+                    className="col-1 addComment"
+                    onClick={() => {
+                      var val = {
+                        id: this.props.semana.nombre + "-" + pregunta.nombre,
+                        encuestaEstudiantes: this.props.semana.feedback
+                          .encuestaEstudiantes,
+                        encuestaMonitor: this.props.semana.feedback
+                          .encuestaMonitor
+                      };
+                      this.props.crearComentario("FEEDBACK", val);
+                    }}
+                  >
+                    <i className="fas fa-comment-medical"></i>
+                  </div>
+                  <div className="col-1"></div>
+                </div>
+              );
+            }
+          })}
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
+
+  renderIndividuales = () => {
+    if (
+      this.props.semana.feedback.individuales !== undefined &&
+      this.props.semana.feedback.individuales.length > 0
+    ) {
+      return (
+        <div>
+          {this.props.semana.feedback.individuales.map(individual => {
+            let usuario = this.props.usuario;
+            if (
+              usuario.rol === "PROFESOR" ||
+              usuario.rol === "MONITOR" ||
+              (usuario.rol === "ESTUDIANTE" &&
+                individual.correo === usuario.correo)
+            ) {
+              return (
+                <div
+                  key={
+                    "INDIVIDUAL" + this.props.semana.nombre + individual.nombre
+                  }
+                >
+                  <div className="row text-center">
+                    <div className="titleIndividuales">{individual.nombre}</div>
+                  </div>
+                  {individual.preguntas.map(pregunta => {
+                    if (usuario.rol !== "ESTUDIANTE") {
+                      return (
+                        <div
+                          className="row filaPreguntaGrupal"
+                          key={
+                            "INDIVIDUAL" +
+                            this.props.semana.nombre +
+                            pregunta.pregunta
+                          }
+                        >
+                          <div className="col-6">{pregunta.pregunta}</div>
+                          <div className="col-2">
+                            {this.renderNota(pregunta.nota)}
+                          </div>
+                          <div className="col-4">{pregunta.commentario}</div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div
+                          className="row filaPreguntaGrupal"
+                          key={
+                            "INDIVIDUAL" +
+                            this.props.semana.nombre +
+                            pregunta.pregunta
+                          }
+                        >
+                          <div className="col-8">{pregunta.pregunta}</div>
+                          <div className="col-2">
+                            {this.renderNota(pregunta.nota)}
+                          </div>
+                          <div
+                            className="col-1 addComment"
+                            onClick={() => {
+                              var val = {
+                                id:
+                                  this.props.semana.nombre +
+                                  "-" +
+                                  individual.correo +
+                                  "-" +
+                                  pregunta.nombre,
+                                encuestaEstudiantes: this.props.semana.feedback
+                                  .encuestaEstudiantes,
+                                encuestaMonitor: this.props.semana.feedback
+                                  .encuestaMonitor
+                              };
+                              this.props.crearComentario("FEEDBACK", val);
+                            }}
+                          >
+                            <i className="fas fa-comment-medical"></i>
+                          </div>
+                          <div className="col-1"></div>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              );
+            } else {
+              return (
+                <div
+                  key={
+                    "INDIVIDUAL" + this.props.semana.nombre + individual.nombre
+                  }
+                ></div>
+              );
+            }
+          })}
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
+
+  renderEncuestas = () => {
+    if (this.props.usuario.rol === "PROFESOR" && this.props.semana.feedback) {
+      return (
+        <div className="row text-center">
+          <div
+            className="col-6 mx-auto linkEncuesta"
+            onClick={() => {
+              window.location.href = this.props.semana.feedback.encuestaMonitor;
+            }}
+          >
+            Encuesta Monitor
+          </div>
+          <div
+            className="col-6 mx-auto linkEncuesta"
+            onClick={() => {
+              window.location.href = this.props.semana.feedback.encuestaEstudiantes;
+            }}
+          >
+            Encuesta Monitor
+          </div>
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
+
+  renderFeedbacks = () => {
+    if (this.props.semana.feedback !== undefined) {
+      return (
+        <div>
+          {this.renderEncuestas()}
           {this.renderGrupales()}
+          {this.renderIndividuales()}
         </div>
       );
     } else {
@@ -62,8 +223,60 @@ class Semana extends React.Component {
     }
   };
 
+  renderTeamworkIndividual = (grupo, nombre) => {
+    return grupo.map(semanal => {
+      return (
+        <Teamwork
+          key={
+            "TEAMWORKINDIVIDUAL" +
+            nombre +
+            this.props.semana.nombre +
+            this.nombre +
+            semanal.nombre
+          }
+          usuario={this.props.usuario}
+          teamwork={semanal}
+          crearComentario={this.props.crearComentario}
+        />
+      );
+    });
+  };
+
+  renderTeamworkTarde = () => {
+    if (
+      this.props.semana.teamwork.creadasTarde &&
+      this.props.semana.teamwork.creadasTarde.length > 0
+    ) {
+      return (
+        <div>
+          <div className="row text-center">
+            <div className="titleIndividuales">Creadas Tarde</div>
+          </div>
+          {this.renderTeamworkIndividual(
+            this.props.semana.teamwork.creadasTarde,
+            "CREADASTARDE"
+          )}
+        </div>
+      );
+    } else {
+      return <div></div>;
+    }
+  };
+
   renderTeamwork = () => {
-    return <div></div>;
+    if (this.props.semana.teamwork !== undefined) {
+      return (
+        <div>
+          {this.renderTeamworkIndividual(
+            this.props.semana.teamwork.semanal,
+            "INDIVIDUAL"
+          )}
+          {this.renderTeamworkTarde()}
+        </div>
+      );
+    } else {
+      return <div className="infoFail">No hubo Teamwork</div>;
+    }
   };
 
   renderBody = () => {
@@ -79,9 +292,9 @@ class Semana extends React.Component {
           <hr className="hrSemana" />
           <div className="teamwork">
             <div className="row">
-              <div className="titlesSemana">Teamwork:</div>
+              <div className="titlesSemana titleTeamwork">Teamwork:</div>
             </div>
-            <div className="row text-center">{this.renderTeamwork()}</div>
+            {this.renderTeamwork()}
           </div>
         </div>
       );

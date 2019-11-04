@@ -5,6 +5,9 @@
   margin-left: 2.5%;
   margin-right: 2.5%;
 }
+.titleTeamwork {
+  margin-bottom: 1vh;
+}
 .bodySemana {
   border-top: 2px solid #343a40;
 }
@@ -79,4 +82,16 @@
   font-size: 3vh;
   margin-top: 1vh;
   cursor: pointer;
+}
+
+.titleIndividuales {
+  width: 100%;
+  font-size: 3vh;
+  text-align: center;
+}
+
+.linkEncuesta {
+  cursor: pointer;
+  font-size: 2vh;
+  text-decoration: underline;
 }
