@@ -56,3 +56,25 @@
 .cardSemanas {
   margin-top: 10vh;
 }
+
+.botonRojo {
+  background-color: #d9534f;
+  color: white;
+  font-size: 18px;
+  border: 1px solid #d9534f;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+  outline: 0;
+}
+
+.botonVerde2 {
+  background-color: #72b324;
+  color: white;
+  font-size: 18px;
+  border: 1px solid #72b324;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+  outline: 0;
+}

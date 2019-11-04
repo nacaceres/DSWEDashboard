@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Card, Button, Modal, Nav } from "react-bootstrap";
+import { Card, Form, Modal, Nav } from "react-bootstrap";
 import "./Grupo.css";
 import { withRouter } from "react-router-dom";
 
@@ -8,12 +8,15 @@ import Semana from "./Semana/Semana.jsx";
 function Grupo(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [infoGrupo, setInfoGrupo] = React.useState(null);
+  const [commentario, setCommentario] = React.useState("");
 
-  function crearComentario() {
+  function crearComentario(tipo, valor) {
     setModalShow(true);
   }
 
-  function handleCancel() {}
+  function handleCancel() {
+    setModalShow(false);
+  }
 
   function handelConfirm() {}
 
@@ -78,7 +81,7 @@ function Grupo(props) {
               semana.nombre
             }
           >
-            <Semana semana={semana}></Semana>
+            <Semana crearComentario={crearComentario} semana={semana}></Semana>
           </div>
         );
       } else {
@@ -217,6 +220,9 @@ function Grupo(props) {
         </div>
 
         <Modal
+          onHide={() => {
+            setModalShow(false);
+          }}
           show={modalShow}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
@@ -224,30 +230,40 @@ function Grupo(props) {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Confirmar
+              Comentar
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>Temp</h4>
+            <Form.Group controlId="exampleForm.ControlTextarea1">
+              <Form.Label>Ingrese su comentario:</Form.Label>
+              <Form.Control
+                value={commentario}
+                onChange={event => {
+                  setCommentario(event.target.value);
+                }}
+                as="textarea"
+                rows="6"
+              />
+            </Form.Group>
           </Modal.Body>
           <Modal.Footer>
-            {/* <button
-                  className="botonRojo"
-                  onClick={() => {
-                    handleCancel();
-                    setModalShow(false);
-                  }}
-                >
-                  Cancelar
-                </button>
-                <button
-                  className="botonVerde2 align-bottom"
-                  onClick={() => {
-                    handelConfirm();
-                  }}
-                >
-                  Confirmar
-                </button> */}
+            <button
+              className="botonRojo"
+              onClick={() => {
+                handleCancel();
+                setModalShow(false);
+              }}
+            >
+              Cancelar
+            </button>
+            <button
+              className="botonVerde2 align-bottom"
+              onClick={() => {
+                handelConfirm();
+              }}
+            >
+              Confirmar
+            </button>
           </Modal.Footer>
         </Modal>
       </div>

@@ -35,10 +35,10 @@ class Semana extends React.Component {
           <div
             className="col-1 addComment"
             onClick={() => {
-              //this.props.enviarMensaje("FEEDBACK", pregunta);
+              this.props.crearComentario("FEEDBACK", pregunta);
             }}
           >
-            <i class="fas fa-comment-medical"></i>
+            <i className="fas fa-comment-medical"></i>
           </div>
           <div className="col-1"></div>
         </div>
