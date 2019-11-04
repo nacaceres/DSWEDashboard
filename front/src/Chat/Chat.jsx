@@ -5,27 +5,35 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
       chat: false,
       complain: "",
       answer: "",
       id: ""
     };
-
-    this.handleChange = this.handleChange.bind(this);
+    this.input = React.createRef();
     this.handleSubmit = this.handleSubmit.bind(this);
     this.activateChat = this.activateChat.bind(this);
   }
-  componentDidMount() {}
-  handleChange(event) {
-    this.setState({ value: event.target.value });
+  componentDidUpdate() {
+    if (this.state.chat) {
+      let i;
+      for (i in this.props.claims) {
+        if (this.props.claims[i]._id === this.state.id) {
+          if (this.state.answer !== this.props.claims[i].answer) {
+            this.setState({
+              answer: this.props.claims[i].answer
+            });
+          }
+        }
+      }
+    }
   }
 
   handleSubmit(event) {
     let req = {};
     req["_id"] = this.state.id;
-    req["answer"] = this.state.value;
-    req["teacher"] = "rcasalla@uniandes.edu.co";
+    req["answer"] = this.input.current.value;
+    req["teacher"] = this.props.correo;
     req["state"] = "Contestado";
     fetch("addanswer", {
       method: "POST",
@@ -41,7 +49,7 @@ class Chat extends Component {
         if (data.err) {
           console.log("Hubo un error haciendo el post de la respuesta");
         } else {
-          this.setState({ answer: this.state.value });
+          this.setState({ answer: this.input.current.value });
         }
       });
     event.preventDefault();
@@ -54,6 +62,22 @@ class Chat extends Component {
       id: idParam
     });
   }
+  renderAnswer() {
+    if (this.state.answer !== undefined) {
+      return (
+        <div className="answer">
+          <p>{this.state.answer}</p>
+        </div>
+      );
+    }
+  }
+  renderInputText() {
+    if (this.state.answer !== undefined) {
+      return "Modificar respuesta al reclamo";
+    } else {
+      return "Respuesta al reclamo";
+    }
+  }
   renderChat() {
     if (this.state.chat) {
       return (
@@ -63,19 +87,16 @@ class Chat extends Component {
               <p>{this.state.complain}</p>
             </div>
 
-            <div className="answer">
-              <p>{this.state.answer}</p>
-            </div>
+            {this.renderAnswer()}
           </div>
           <div className="input-group mb-3">
             <input
               type="text"
               className="form-control"
-              placeholder="Respuesta al reclamo"
-              aria-label="Respuesta al reclamo"
+              placeholder={this.renderInputText()}
+              aria-label={this.renderInputText()}
               aria-describedby="button-addon2"
-              value={this.state.value}
-              onChange={this.handleChange}
+              ref={this.input}
             />
             <div className="input-group-append">
               <button
@@ -101,7 +122,7 @@ class Chat extends Component {
   }
   renderMessages = () => {
     return this.props.claims.map(d => (
-      <tr key={d.id_feedback}>
+      <tr key={d._id}>
         <th scope="row">{d.id_feedback}</th>
         <td>{d.state}</td>
         <td>{d.section}</td>

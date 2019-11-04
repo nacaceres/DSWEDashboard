@@ -25,7 +25,8 @@ function App(props) {
           let i;
           for (i in claims) {
             if (claims[i]._id === update._id) {
-              copy[i] = update;
+              copy.splice(i, 1);
+              copy.push(update);
               setClaims(copy);
               caso1 = true;
               break;
@@ -36,14 +37,14 @@ function App(props) {
               let j;
               for (j in usuario.secciones) {
                 if (usuario.secciones[j].numero === update.section) {
-                  copy.push(update);
+                  copy.unshift(update);
                   setClaims(copy);
                   break;
                 }
               }
             } else {
               if (update.student === usuario.correo) {
-                copy.push(update);
+                copy.unshift(update);
                 setClaims(copy);
               }
             }
@@ -72,6 +73,16 @@ function App(props) {
         if (data.err) {
           console.log("Hubo un error haciendo el fetch de los claims");
         } else {
+          data.sort(function(a, b) {
+            if (a.state === "Contestado" && b.state === "Pendiente") {
+              return 1;
+            }
+            if (a.state === "Pendiente" && b.state === "Contestado") {
+              return -1;
+            }
+            return 0;
+          });
+          console.log(data);
           setClaims(data);
         }
       });
@@ -146,7 +157,7 @@ function App(props) {
           path="/comentarios"
           render={() => (
             <div>
-              <Chat claims={claims} rol={usuario.rol} />
+              <Chat claims={claims} rol={usuario.rol} correo={usuario.correo} />
             </div>
           )}
         />

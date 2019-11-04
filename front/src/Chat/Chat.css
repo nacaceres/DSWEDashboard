@@ -16,7 +16,9 @@
   margin-right: 10%;
   margin-left: 2%;
 }
-
+.btn {
+  width: 7em;
+}
 .answer {
   border-radius: 10px 10px 10px 10px;
   background-color: #0496ff;
