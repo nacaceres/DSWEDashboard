@@ -7,6 +7,7 @@
 const app = require("../app");
 const debug = require("debug")("dswedashboard:server");
 const http = require("http");
+var request = require("request");
 const MyMongoLib = require("../MyMongoLib.js");
 const MyWSLib = require("../MyWSLib.js");
 const myMongoLib = MyMongoLib();
@@ -24,12 +25,85 @@ app.set("port", port);
 
 const server = http.createServer(app);
 
+let timer = () => {
+  let hrs = 1; //Cada cuantas horas se refresca
+  refrescar();
+  setTimeout(() => {
+    timer();
+  }, hrs * 60 * 60000);
+};
+
+let refreshGrupos = secciones => {
+  let grupo = null;
+  let numero = 0;
+  for (let index = 0; index < secciones.length; index++) {
+    let seccion = secciones[index];
+    numero = seccion.numero;
+    if (seccion.grupos.length > 0) {
+      grupo = seccion.grupos.pop();
+      break;
+    }
+  }
+
+  if (grupo !== null && numero !== 0) {
+    var options = {
+      url:
+        "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?seccion=" +
+        numero +
+        "&grupo=" +
+        grupo
+    };
+    request.get(options, function(error, response, body) {
+      if (!error) {
+        var grupoJSON = JSON.parse(body).seccion;
+        myMongoLib
+          .deleteGrupo(numero, grupo)
+          .then(docs => {
+            if (grupoJSON) {
+              myMongoLib
+                .postGrupo(grupoJSON)
+                .then(docs => {
+                  refreshGrupos(secciones);
+                })
+                .catch(err => {
+                  console.log(err);
+                });
+            } else {
+              refreshGrupos(secciones);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      } else {
+        console.log(error);
+      }
+    });
+  }
+};
+
+let refrescar = () => {
+  console.log("Refrescando");
+  var options = {
+    url:
+      "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec"
+  };
+  // use the access token to access the Spotify Web API
+  request.get(options, function(error, response, body) {
+    if (!error) {
+      var secciones = JSON.parse(body).secciones;
+      refreshGrupos(secciones);
+    } else {
+      console.log(error);
+    }
+  });
+};
+
 /**
  * Listen on provided port, on all network interfaces.
  */
 myWSLib.setupWS(server);
-myMongoLib.listenToChanges(myWSLib.notifyAll);
-
+myMongoLib.listenToChanges(myWSLib.notifyAll, timer);
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);
@@ -63,22 +137,20 @@ function onError(error) {
     throw error;
   }
 
-  const bind = typeof port === "string"
-    ? "Pipe " + port
-    : "Port " + port;
+  const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-  case "EACCES":
-    console.error(bind + " requires elevated privileges");
-    process.exit(1);
-    break;
-  case "EADDRINUSE":
-    console.error(bind + " is already in use");
-    process.exit(1);
-    break;
-  default:
-    throw error;
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+      break;
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+      break;
+    default:
+      throw error;
   }
 }
 
@@ -88,8 +160,6 @@ function onError(error) {
 
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === "string"
-    ? "pipe " + addr
-    : "port " + addr.port;
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
 }
