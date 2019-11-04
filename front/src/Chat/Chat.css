@@ -16,6 +16,10 @@
   margin-right: 10%;
   margin-left: 2%;
 }
+.list {
+  height: 90vh;
+  overflow: auto;
+}
 .btn {
   width: 7em;
 }

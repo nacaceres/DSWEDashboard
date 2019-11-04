@@ -79,7 +79,7 @@ class Chat extends Component {
     }
   }
   renderChat() {
-    if (this.state.chat) {
+    if (this.state.chat && this.props.rol !== "ESTUDIANTE") {
       return (
         <div>
           <div className="board">
@@ -111,6 +111,17 @@ class Chat extends Component {
           </div>
         </div>
       );
+    } else if (this.state.chat) {
+      return (
+        <div>
+          <div className="board">
+            <div className="complain">
+              <p>{this.state.complain}</p>
+            </div>
+            {this.renderAnswer()}
+          </div>
+        </div>
+      );
     }
   }
   renderButton(state) {
@@ -120,39 +131,80 @@ class Chat extends Component {
       return "Modificar";
     }
   }
+  renderEncargado(encargado) {
+    if (encargado !== undefined) {
+      return encargado;
+    } else {
+      return "No ha sido asignado";
+    }
+  }
   renderMessages = () => {
-    return this.props.claims.map(d => (
-      <tr key={d._id}>
-        <th scope="row">{d.id_feedback}</th>
-        <td>{d.state}</td>
-        <td>{d.section}</td>
-        <td>{d.student}</td>
-        <td>
-          <button
-            className="btn btn-primary"
-            onClick={() => this.activateChat(d._id, d.complain, d.answer)}
-          >
-            {this.renderButton(d.state)}
-          </button>
-        </td>
-      </tr>
-    ));
+    if (this.props.rol === "ESTUDIANTE") {
+      return this.props.claims.map(d => (
+        <tr key={d._id}>
+          <th scope="row">{d.id_feedback}</th>
+          <td>{d.state}</td>
+          <td>{d.section}</td>
+          <td>{this.renderEncargado(d.teacher)}</td>
+          <td>
+            <button
+              className="btn btn-primary"
+              onClick={() => this.activateChat(d._id, d.complain, d.answer)}
+            >
+              Detalle
+            </button>
+          </td>
+        </tr>
+      ));
+    } else {
+      return this.props.claims.map(d => (
+        <tr key={d._id}>
+          <th scope="row">{d.id_feedback}</th>
+          <td>{d.state}</td>
+          <td>{d.section}</td>
+          <td>{d.student}</td>
+          <td>
+            <button
+              className="btn btn-primary"
+              onClick={() => this.activateChat(d._id, d.complain, d.answer)}
+            >
+              {this.renderButton(d.state)}
+            </button>
+          </td>
+        </tr>
+      ));
+    }
   };
+  renderEncabezado() {
+    if (this.props.rol === "ESTUDIANTE") {
+      return (
+        <tr>
+          <th scope="col">idFeedback</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Seccion</th>
+          <th scope="col">Encargado</th>
+          <th scope="col"></th>
+        </tr>
+      );
+    } else {
+      return (
+        <tr>
+          <th scope="col">idFeedback</th>
+          <th scope="col">Estado</th>
+          <th scope="col">Seccion</th>
+          <th scope="col">Estudiante</th>
+          <th scope="col"></th>
+        </tr>
+      );
+    }
+  }
   render() {
     return (
-      <div className="row screen">
+      <div className="row screen container-fluid">
         <div className="list col-sm-6">
           <h1>Reclamos</h1>
           <table className="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">idFeedback</th>
-                <th scope="col">Estado</th>
-                <th scope="col">Seccion</th>
-                <th scope="col">Estudiante</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
+            <thead>{this.renderEncabezado()}</thead>
             <tbody>{this.renderMessages()}</tbody>
           </table>
         </div>
