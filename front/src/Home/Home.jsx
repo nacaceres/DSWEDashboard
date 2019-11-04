@@ -78,7 +78,9 @@ class Home extends React.Component {
             <Card.Body>
               <Card.Title>
                 <div className="row text-center">
-                  <div className="mx-auto tituloIngreso">Ingreso</div>
+                  <div className="mx-auto tituloIngreso">
+                    <h1 className="tituloIngreso">Ingreso</h1>
+                  </div>
                 </div>
               </Card.Title>
               <div className="row text-center">

@@ -103,8 +103,8 @@ function Grupo(props) {
         <div className="row rowInfo">
           <div className="col-lg-1"></div>
           <div className="col-lg-6">
-            <div className="mx-auto lblNombreGrupo">
-              {infoGrupo.grupo.nombre}
+            <div className="mx-auto ">
+              <h1 className="lblNombreGrupo">{infoGrupo.grupo.nombre}</h1>
             </div>
           </div>
           <div className="col-lg-4">
