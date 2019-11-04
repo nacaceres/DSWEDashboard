@@ -21,30 +21,34 @@ function App(props) {
         if (usuario.rol !== "GUEST") {
           let copy = claims.slice();
           let update = JSON.parse(msg.data);
+          let caso1 = false;
           let i;
           for (i in claims) {
             if (claims[i]._id === update._id) {
               console.log("Entro al primer caso");
               copy[i] = update;
               setClaims(copy);
+              caso1 = true;
               break;
             }
           }
-          if (usuario.rol === "PROFESOR" || usuario.rol === "MONITOR") {
-            let j;
-            for (j in usuario.secciones) {
-              if (usuario.secciones[j].numero === update.section) {
-                console.log("Entro al segundo caso");
+          if (!caso1) {
+            if (usuario.rol === "PROFESOR" || usuario.rol === "MONITOR") {
+              let j;
+              for (j in usuario.secciones) {
+                if (usuario.secciones[j].numero === update.section) {
+                  console.log("Entro al segundo caso");
+                  copy.push(update);
+                  setClaims(copy);
+                  break;
+                }
+              }
+            } else {
+              if (update.student === usuario.correo) {
+                console.log("Entro al tercero caso");
                 copy.push(update);
                 setClaims(copy);
-                break;
               }
-            }
-          } else {
-            if (update.student === usuario.correo) {
-              console.log("Entro al tercero caso");
-              copy.push(update);
-              setClaims(copy);
             }
           }
         }
