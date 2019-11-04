@@ -25,7 +25,6 @@ function App(props) {
           let i;
           for (i in claims) {
             if (claims[i]._id === update._id) {
-              console.log("Entro al primer caso");
               copy[i] = update;
               setClaims(copy);
               caso1 = true;
@@ -37,7 +36,6 @@ function App(props) {
               let j;
               for (j in usuario.secciones) {
                 if (usuario.secciones[j].numero === update.section) {
-                  console.log("Entro al segundo caso");
                   copy.push(update);
                   setClaims(copy);
                   break;
@@ -45,7 +43,6 @@ function App(props) {
               }
             } else {
               if (update.student === usuario.correo) {
-                console.log("Entro al tercero caso");
                 copy.push(update);
                 setClaims(copy);
               }
