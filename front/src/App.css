@@ -2,7 +2,7 @@
   background-color: #4f6367;
 }
 .App {
-  background-color: #477998;
+  background-color: #4b7c9b;
   height: 100vh;
 }
 
@@ -24,11 +24,13 @@
 .selectedSeccion {
   text-shadow: 0 0 #ffffff, 0 0 #ffffff, 0 0 #ffffff, 0 0 #ffffff;
 }
-
+h1 {
+  font-family: "Bevan", cursive;
+  color: black;
+}
 .dropDownItemSelected {
   font-weight: bold;
 }
-
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */

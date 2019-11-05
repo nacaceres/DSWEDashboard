@@ -10,7 +10,7 @@
 }
 .complain {
   margin-top: 2%;
-  background-color: #0496ff;
+  background-color: #96acb7;
   padding: 0.5%;
   border-radius: 10px 10px 10px 10px;
   margin-right: 10%;
@@ -22,12 +22,17 @@
 }
 .btn {
   width: 7em;
+  background-color: #343a40;
+  border-color: #343a40;
 }
 .answer {
   border-radius: 10px 10px 10px 10px;
-  background-color: #0496ff;
+  background-color: #96acb7;
   padding: 0.5%;
   margin-top: 5%;
   margin-right: 2%;
   margin-left: 10%;
+}
+.table {
+  color: black;
 }
