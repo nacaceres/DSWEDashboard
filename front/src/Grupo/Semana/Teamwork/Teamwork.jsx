@@ -2,6 +2,7 @@ import React from "react";
 import { Card } from "react-bootstrap";
 import "./Teamwork.css";
 
+
 class Teamwork extends React.Component {
   constructor(props) {
     super(props);
