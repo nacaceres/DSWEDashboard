@@ -4,7 +4,7 @@ Dentro de la pagina se puede: Consultar el estado del proyecto en herramientas c
 # ScreenShot
 ![Screenshot Pag Web](https://raw.githubusercontent.com/nacaceres/CriticaVisualizacion/master/SIC_Principal.png)
 # Link a la página del proyecto   
-TODO
+http://157.253.238.75:8082
 # Tecnologias usadas
 * HTML
 * CSS
