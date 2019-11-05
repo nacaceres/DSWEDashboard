@@ -1,7 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 let ObjectId = require("mongodb").ObjectID;
 
-
 const MyMongoLib = function() {
   const MyMongoLib = this || {};
   // Connection URL
@@ -139,7 +138,7 @@ const MyMongoLib = function() {
         return messageCol;
       });
     });
-  MyMongoLib.listenToChanges = (cbk,inicial) => {
+  MyMongoLib.listenToChanges = (cbk, inicial) => {
     client.connect((err, client) => {
       if (err !== null) {
         throw err;
@@ -160,10 +159,9 @@ const MyMongoLib = function() {
       });
     });
   };
-  MyMongoLib.autoUpdate = (hrs) =>{
-    console.log("STARTED");
-
-  }
+  MyMongoLib.autoUpdate = hrs => {
+    console.log("STARTED", hrs);
+  };
 
   return MyMongoLib;
 };

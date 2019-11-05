@@ -7,7 +7,7 @@ const MyMongoLib = require("../MyMongoLib.js");
 const myMongoLib = MyMongoLib();
 
 /* GET home page. */
-router.get("/", function(req, res, next) {
+router.get("/", function(req, res) {
   res.render("index", { title: "Express" });
 });
 
@@ -62,7 +62,10 @@ router.get("/grupo", (req, res) => {
               var grupoJSON = JSON.parse(body).seccion;
               myMongoLib
                 .postGrupo(grupoJSON)
-                .then(docs => res.json(grupoJSON))
+                .then(docs => {
+                  res.json(grupoJSON);
+                  console.log(docs);
+                })
                 .catch(err => res.send({ err: true, msg: err }));
             } else {
               res.send(error);
