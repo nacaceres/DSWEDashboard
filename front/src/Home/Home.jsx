@@ -3,6 +3,7 @@ import { Card, Button, InputGroup, FormControl } from "react-bootstrap";
 import "./Home.css";
 import { withRouter } from "react-router-dom";
 
+/*Sergio Naranjo: Asi como en App usaron hooks, sería bueno que en este componente home tambien los utilizaran, se ahorrarían el problema de .bind */
 class Home extends React.Component {
   constructor(props) {
     super(props);
