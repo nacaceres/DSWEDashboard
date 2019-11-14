@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import "./Teamwork.css";
 
-class Teamwork extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
-  }
-  renderList = () => {
-    console.log(this.props.teamwork.tasks);
-    return this.props.teamwork.tasks.map(task => {
+const Teamwork = ({
+  teamwork,
+  usuario
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const renderList = () => {
+    console.log(teamwork.tasks);
+    return teamwork.tasks.map(task => {
       return (
         <tr key={"TASK" + task.taskId}>
           <th scope="row">{task.nombre}</th>
@@ -20,7 +19,7 @@ class Teamwork extends React.Component {
           <td>{task.createdOn}</td>
           <td>{task.completedOn}</td>
           <td>{task.timeLogger}</td>
-          {this.props.usuario.rol === "ESTUDIANTE" ? (
+          {usuario.rol === "ESTUDIANTE" ? (
             <td>CLICK</td>
           ) : (
             <div></div>
@@ -30,10 +29,8 @@ class Teamwork extends React.Component {
     });
   };
 
-  renderColMensaje = () => {};
-
-  renderBody = () => {
-    if (this.state.open) {
+  const renderBody = () => {
+    if (open) {
       return (
         <div className="bodyTeamwork">
           <table className="table table-hover">
@@ -45,46 +42,45 @@ class Teamwork extends React.Component {
                 <th scope="col">Fecha Creación</th>
                 <th scope="col">Fecha Entrega</th>
                 <th scope="col">Minutos Registrados</th>
-                {this.props.usuario.rol === "ESTUDIANTE" ? (
+                {usuario.rol === "ESTUDIANTE" ? (
                   <th scope="col">Comentario</th>
                 ) : (
                   <div></div>
                 )}
               </tr>
             </thead>
-            <tbody>{this.renderList()}</tbody>
+            <tbody>{renderList()}</tbody>
           </table>
         </div>
       );
     } else {
       return <div></div>;
     }
-  };
-
-  render() {
-    return (
-      <div className="row">
-        <Card className="cardTeamwork" border="dark" text="dark">
-          <Card.Header
-            className="cardHeaderTeamwork "
-            onClick={() => this.setState({ open: !this.state.open })}
-          >
-            <Card.Title>
-              <div className="row filaTitleTeamwork noselect">
-                <div className="col-9 text-center nombreTeamwork">
-                  {this.props.teamwork.nombre}
-                </div>
-                <div className="col-2 numTasksTeamwork">
-                  {this.props.teamwork.tasks.length}
-                </div>
-                <div className="col-1"></div>
-              </div>
-            </Card.Title>
-          </Card.Header>
-          {this.renderBody()}
-        </Card>
-      </div>
-    );
   }
+
+  return (
+    <div className="row">
+      <Card className="cardTeamwork" border="dark" text="dark">
+        <Card.Header
+          className="cardHeaderTeamwork "
+          onClick={() => setOpen(!open)}
+        >
+          <Card.Title>
+            <div className="row filaTitleTeamwork noselect">
+              <div className="col-9 text-center nombreTeamwork">
+                {teamwork.nombre}
+              </div>
+              <div className="col-2 numTasksTeamwork">
+                {teamwork.tasks.length}
+              </div>
+              <div className="col-1"></div>
+            </div>
+          </Card.Title>
+        </Card.Header>
+        {renderBody()}
+      </Card>
+    </div>
+  );
 }
+
 export default Teamwork;
