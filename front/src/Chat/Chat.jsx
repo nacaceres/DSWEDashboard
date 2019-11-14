@@ -1,40 +1,35 @@
-import React, { Component } from "react";
+import React, { useState, useEffect, createRef } from "react";
 import { withRouter } from "react-router-dom";
 import "./Chat.css";
-class Chat extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      chat: false,
-      complain: "",
-      answer: "",
-      id: ""
-    };
-    this.input = React.createRef();
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.activateChat = this.activateChat.bind(this);
-  }
-  componentDidUpdate() {
-    if (this.state.chat) {
-      let i;
-      for (i in this.props.claims) {
-        if (this.props.claims[i]._id === this.state.id) {
-          if (this.state.answer !== this.props.claims[i].answer) {
-            this.setState({
-              answer: this.props.claims[i].answer
-            });
-          }
-        }
-      }
-    }
-  }
 
-  handleSubmit(event) {
-    let req = {};
-    req["_id"] = this.state.id;
-    req["answer"] = this.input.current.value;
-    req["teacher"] = this.props.correo;
-    req["state"] = "Contestado";
+const Chat = ({
+  correo,
+  rol,
+  claims
+}) => {
+  const [chat, setChat] = useState(false);
+  const [complain, setComplain] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [id, setId] = useState('');
+  const input = createRef();
+
+  useEffect(() => {
+    if (chat) {
+      claims.forEach(claim => {
+        if (claim._id === id)
+          if (answer !== claim.answer) setAnswer(claim.answer);
+      });
+    }
+  });
+
+  const handleSubmit = event => {
+    const req = {
+      _id: id,
+      answer: input.current.value,
+      teacher: correo,
+      state: 'Contestado'
+    };
+
     fetch("addanswer", {
       method: "POST",
       headers: {
@@ -49,61 +44,55 @@ class Chat extends Component {
         if (data.err) {
           console.log("Hubo un error haciendo el post de la respuesta");
         } else {
-          this.setState({ answer: this.input.current.value });
+          setAnswer(input.current.value)
         }
       });
     event.preventDefault();
   }
-  activateChat(idParam, complainParam, answerParam) {
-    this.setState({
-      chat: true,
-      complain: complainParam,
-      answer: answerParam,
-      id: idParam
-    });
+
+  const activateChat = (idParam, complainParam, answerParam) => {
+    setChat(true);
+    setComplain(complainParam);
+    setAnswer(answerParam);
+    setId(idParam);
   }
-  renderAnswer() {
-    if (this.state.answer !== undefined) {
-      return (
-        <div className="answer">
-          <p>{this.state.answer}</p>
+
+  const renderAnswer = () =>
+    answer !== undefined
+      ? <div className="answer">
+          <p>{answer}</p>
         </div>
-      );
-    }
-  }
-  renderInputText() {
-    if (this.state.answer !== undefined) {
-      return "Modificar respuesta al reclamo";
-    } else {
-      return "Respuesta al reclamo";
-    }
-  }
-  renderChat() {
-    if (this.state.chat && this.props.rol !== "ESTUDIANTE") {
+      : null;
+
+  const renderInputText = () =>
+    answer !== undefined ? 'Modificar respuesta al reclamo' : 'Respuesta al reclamo';
+
+  const renderChat = () => {
+    if (chat && rol !== "ESTUDIANTE") {
       return (
         <div>
           <div className="board">
             <div className="complain">
-              <p>{this.state.complain}</p>
+              <p>{complain}</p>
             </div>
 
-            {this.renderAnswer()}
+            {renderAnswer()}
           </div>
           <div className="input-group mb-3">
             <input
               type="text"
               className="form-control"
-              placeholder={this.renderInputText()}
-              aria-label={this.renderInputText()}
+              placeholder={renderInputText()}
+              aria-label={renderInputText()}
               aria-describedby="button-addon2"
-              ref={this.input}
+              ref={input}
             />
             <div className="input-group-append">
               <button
                 className="btn btn-primary"
                 type="button"
                 id="button-addon2"
-                onClick={this.handleSubmit}
+                onClick={handleSubmit}
               >
                 Enviar
               </button>
@@ -111,108 +100,90 @@ class Chat extends Component {
           </div>
         </div>
       );
-    } else if (this.state.chat) {
+    } else if (chat) {
       return (
         <div>
           <div className="board">
             <div className="complain">
-              <p>{this.state.complain}</p>
+              <p>{complain}</p>
             </div>
-            {this.renderAnswer()}
+            {renderAnswer()}
           </div>
         </div>
       );
     }
   }
-  renderButton(state) {
-    if (state === "Pendiente") {
-      return "Responder";
-    } else {
-      return "Modificar";
-    }
-  }
-  renderEncargado(encargado) {
-    if (encargado !== undefined) {
-      return encargado;
-    } else {
-      return "No ha sido asignado";
-    }
-  }
-  renderMessages = () => {
-    if (this.props.rol === "ESTUDIANTE") {
-      return this.props.claims.map(d => (
-        <tr key={d._id}>
-          <th scope="row">{d.id_feedback}</th>
-          <td>{d.state}</td>
-          <td>{d.section}</td>
-          <td>{this.renderEncargado(d.teacher)}</td>
-          <td>
-            <button
-              className="btn btn-primary"
-              onClick={() => this.activateChat(d._id, d.complain, d.answer)}
-            >
-              Detalle
-            </button>
-          </td>
-        </tr>
-      ));
-    } else {
-      return this.props.claims.map(d => (
-        <tr key={d._id}>
-          <th scope="row">{d.id_feedback}</th>
-          <td>{d.state}</td>
-          <td>{d.section}</td>
-          <td>{d.student}</td>
-          <td>
-            <button
-              className="btn btn-primary"
-              onClick={() => this.activateChat(d._id, d.complain, d.answer)}
-            >
-              {this.renderButton(d.state)}
-            </button>
-          </td>
-        </tr>
-      ));
-    }
-  };
-  renderEncabezado() {
-    if (this.props.rol === "ESTUDIANTE") {
-      return (
-        <tr>
+
+  const renderButton = state => state === 'Pendiente' ? 'Responder' : 'Modificar';
+
+  const renderEncargado = encargado => encargado !== undefined ? encargado : 'No ha sido asignado';
+
+  const renderMessages = () =>
+    rol == 'ESTUDIANTE'
+      ? claims.map(d => (
+          <tr key={d._id}>
+            <th scope="row">{d.id_feedback}</th>
+            <td>{d.state}</td>
+            <td>{d.section}</td>
+            <td>{renderEncargado(d.teacher)}</td>
+            <td>
+              <button
+                className="btn btn-primary"
+                onClick={() => activateChat(d._id, d.complain, d.answer)}
+              >
+                Detalle
+              </button>
+            </td>
+          </tr>
+        ))
+      :  claims.map(d => (
+          <tr key={d._id}>
+            <th scope="row">{d.id_feedback}</th>
+            <td>{d.state}</td>
+            <td>{d.section}</td>
+            <td>{d.student}</td>
+            <td>
+              <button
+                className="btn btn-primary"
+                onClick={() => activateChat(d._id, d.complain, d.answer)}
+              >
+                {renderButton(d.state)}
+              </button>
+            </td>
+          </tr>
+        ));
+
+  const renderEncabezado = () =>
+    rol === "ESTUDIANTE"
+      ? <tr>
           <th scope="col">idFeedback</th>
           <th scope="col">Estado</th>
           <th scope="col">Seccion</th>
           <th scope="col">Encargado</th>
           <th scope="col"></th>
         </tr>
-      );
-    } else {
-      return (
-        <tr>
+      : <tr>
           <th scope="col">idFeedback</th>
           <th scope="col">Estado</th>
           <th scope="col">Seccion</th>
           <th scope="col">Estudiante</th>
           <th scope="col"></th>
         </tr>
-      );
-    }
-  }
-  render() {
-    return (
-      <div className="row screen container-fluid">
-        <div className="list col-sm-6">
-          <h1>Reclamos</h1>
-          <table className="table table-hover">
-            <thead>{this.renderEncabezado()}</thead>
-            <tbody>{this.renderMessages()}</tbody>
-          </table>
-        </div>
-        <div className="list col-sm-1"> </div>
-        <div className="list col-sm-4">{this.renderChat()}</div>
-        <div className="list col-sm-1"> </div>
+
+  return (
+    <div className="row screen container-fluid">
+      <div className="list col-sm-6">
+        <h1>Reclamos</h1>
+        <table className="table table-hover">
+          <thead>{renderEncabezado()}</thead>
+          <tbody>{renderMessages()}</tbody>
+        </table>
       </div>
-    );
-  }
+      <div className="list col-sm-1"> </div>
+      <div className="list col-sm-4">{renderChat()}</div>
+      <div className="list col-sm-1"> </div>
+    </div>
+  );
 }
+
 export default withRouter(Chat);
