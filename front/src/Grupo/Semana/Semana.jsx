@@ -1,49 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "react-bootstrap";
 import "./Semana.css";
 import Teamwork from "./Teamwork/Teamwork.jsx";
 
-class Semana extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
+const Semana = ({
+  semana,
+  usuario,
+  crearComentario
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const renderNota = nota => {
+    let color = "red";
+    if (nota > 2) color = "orange";
+    if (nota > 3) color = "yellow";
+    if (nota > 4) color = "green";
+    return <div style={{ backgroundColor: color }} className="notaCont"></div>;
   }
 
-  renderNota = nota => {
-    let color = "red";
-    if (nota > 2) {
-      color = "orange";
-    }
-    if (nota > 3) {
-      color = "yellow";
-    }
-    if (nota > 4) {
-      color = "green";
-    }
-    return <div style={{ backgroundColor: color }} className="notaCont"></div>;
-  };
-
-  renderGrupales = () => {
+  const renderGrupales = () => {
     if (
-      this.props.semana.feedback.preguntasGrupales !== undefined &&
-      this.props.semana.feedback.preguntasGrupales.length > 0
+      semana.feedback.preguntasGrupales !== undefined &&
+      semana.feedback.preguntasGrupales.length > 0
     ) {
       return (
         <div>
           <div className="row text-center">
             <div className="titleGrupales"> Grupales</div>
           </div>
-          {this.props.semana.feedback.preguntasGrupales.map(pregunta => {
-            if (this.props.usuario.rol !== "ESTUDIANTE") {
+          {semana.feedback.preguntasGrupales.map(pregunta => {
+            if (usuario.rol !== "ESTUDIANTE") {
               return (
                 <div
                   className="row filaPreguntaGrupal"
-                  key={this.props.semana.nombre + pregunta.pregunta}
+                  key={semana.nombre + pregunta.pregunta}
                 >
                   <div className="col-6">{pregunta.pregunta}</div>
-                  <div className="col-2">{this.renderNota(pregunta.nota)}</div>
+                  <div className="col-2">{renderNota(pregunta.nota)}</div>
                   <div className="col-4">{pregunta.commentario}</div>
                 </div>
               );
@@ -51,21 +44,21 @@ class Semana extends React.Component {
               return (
                 <div
                   className="row filaPreguntaGrupal"
-                  key={this.props.semana.nombre + pregunta.pregunta}
+                  key={semana.nombre + pregunta.pregunta}
                 >
                   <div className="col-8">{pregunta.pregunta}</div>
-                  <div className="col-2">{this.renderNota(pregunta.nota)}</div>
+                  <div className="col-2">{renderNota(pregunta.nota)}</div>
                   <div
                     className="col-1 addComment"
                     onClick={() => {
                       var val = {
-                        id: this.props.semana.nombre + "-" + pregunta.nombre,
-                        encuestaEstudiantes: this.props.semana.feedback
+                        id: semana.nombre + "-" + pregunta.nombre,
+                        encuestaEstudiantes: semana.feedback
                           .encuestaEstudiantes,
-                        encuestaMonitor: this.props.semana.feedback
+                        encuestaMonitor: semana.feedback
                           .encuestaMonitor
                       };
-                      this.props.crearComentario("FEEDBACK", val);
+                      crearComentario("FEEDBACK", val);
                     }}
                   >
                     <i className="fas fa-comment-medical"></i>
@@ -82,15 +75,14 @@ class Semana extends React.Component {
     }
   };
 
-  renderIndividuales = () => {
+  const renderIndividuales = () => {
     if (
-      this.props.semana.feedback.individuales !== undefined &&
-      this.props.semana.feedback.individuales.length > 0
+      semana.feedback.individuales !== undefined &&
+      semana.feedback.individuales.length > 0
     ) {
       return (
         <div>
-          {this.props.semana.feedback.individuales.map(individual => {
-            let usuario = this.props.usuario;
+          {semana.feedback.individuales.map(individual => {
             if (
               usuario.rol === "PROFESOR" ||
               usuario.rol === "MONITOR" ||
@@ -100,7 +92,7 @@ class Semana extends React.Component {
               return (
                 <div
                   key={
-                    "INDIVIDUAL" + this.props.semana.nombre + individual.nombre
+                    "INDIVIDUAL" + semana.nombre + individual.nombre
                   }
                 >
                   <div className="row text-center">
@@ -113,13 +105,13 @@ class Semana extends React.Component {
                           className="row filaPreguntaGrupal"
                           key={
                             "INDIVIDUAL" +
-                            this.props.semana.nombre +
+                            semana.nombre +
                             pregunta.pregunta
                           }
                         >
                           <div className="col-6">{pregunta.pregunta}</div>
                           <div className="col-2">
-                            {this.renderNota(pregunta.nota)}
+                            {renderNota(pregunta.nota)}
                           </div>
                           <div className="col-4">{pregunta.commentario}</div>
                         </div>
@@ -130,30 +122,30 @@ class Semana extends React.Component {
                           className="row filaPreguntaGrupal"
                           key={
                             "INDIVIDUAL" +
-                            this.props.semana.nombre +
+                            semana.nombre +
                             pregunta.pregunta
                           }
                         >
                           <div className="col-8">{pregunta.pregunta}</div>
                           <div className="col-2">
-                            {this.renderNota(pregunta.nota)}
+                            {renderNota(pregunta.nota)}
                           </div>
                           <div
                             className="col-1 addComment"
                             onClick={() => {
                               var val = {
                                 id:
-                                  this.props.semana.nombre +
+                                  semana.nombre +
                                   "-" +
                                   individual.correo +
                                   "-" +
                                   pregunta.nombre,
-                                encuestaEstudiantes: this.props.semana.feedback
+                                encuestaEstudiantes: semana.feedback
                                   .encuestaEstudiantes,
-                                encuestaMonitor: this.props.semana.feedback
+                                encuestaMonitor: semana.feedback
                                   .encuestaMonitor
                               };
-                              this.props.crearComentario("FEEDBACK", val);
+                              crearComentario("FEEDBACK", val);
                             }}
                           >
                             <i className="fas fa-comment-medical"></i>
@@ -169,7 +161,7 @@ class Semana extends React.Component {
               return (
                 <div
                   key={
-                    "INDIVIDUAL" + this.props.semana.nombre + individual.nombre
+                    "INDIVIDUAL" + semana.nombre + individual.nombre
                   }
                 ></div>
               );
@@ -182,14 +174,14 @@ class Semana extends React.Component {
     }
   };
 
-  renderEncuestas = () => {
-    if (this.props.usuario.rol === "PROFESOR" && this.props.semana.feedback) {
+  const renderEncuestas = () => {
+    if (usuario.rol === "PROFESOR" && semana.feedback) {
       return (
         <div className="row text-center">
           <div
             className="col-6 mx-auto linkEncuesta"
             onClick={() => {
-              window.location.href = this.props.semana.feedback.encuestaMonitor;
+              window.location.href = semana.feedback.encuestaMonitor;
             }}
           >
             Encuesta Monitor
@@ -197,7 +189,7 @@ class Semana extends React.Component {
           <div
             className="col-6 mx-auto linkEncuesta"
             onClick={() => {
-              window.location.href = this.props.semana.feedback.encuestaEstudiantes;
+              window.location.href = semana.feedback.encuestaEstudiantes;
             }}
           >
             Encuesta Monitor
@@ -209,13 +201,13 @@ class Semana extends React.Component {
     }
   };
 
-  renderFeedbacks = () => {
-    if (this.props.semana.feedback !== undefined) {
+  const renderFeedbacks = () => {
+    if (semana.feedback !== undefined) {
       return (
         <div>
-          {this.renderEncuestas()}
-          {this.renderGrupales()}
-          {this.renderIndividuales()}
+          {renderEncuestas()}
+          {renderGrupales()}
+          {renderIndividuales()}
         </div>
       );
     } else {
@@ -223,8 +215,7 @@ class Semana extends React.Component {
     }
   };
 
-  renderTeamworkIndividual = (grupo, nombre) => {
-    let usuario = this.props.usuario;
+  const renderTeamworkIndividual = (grupo, nombre) => {
     return grupo.map(semanal => {
       if (
         usuario.rol === "PROFESOR" ||
@@ -236,13 +227,13 @@ class Semana extends React.Component {
             key={
               "TEAMWORKINDIVIDUAL" +
               nombre +
-              this.props.semana.nombre +
-              this.nombre +
+              semana.nombre +
+              nombre +
               semanal.nombre
             }
-            usuario={this.props.usuario}
+            usuario={usuario}
             teamwork={semanal}
-            crearComentario={this.props.crearComentario}
+            crearComentario={crearComentario}
           />
         );
       } else {
@@ -251,8 +242,8 @@ class Semana extends React.Component {
             key={
               "TEAMWORKINDIVIDUAL" +
               nombre +
-              this.props.semana.nombre +
-              this.nombre +
+              semana.nombre +
+              nombre +
               semanal.nombre
             }
           ></div>
@@ -261,18 +252,18 @@ class Semana extends React.Component {
     });
   };
 
-  renderTeamworkTarde = () => {
+  const renderTeamworkTarde = () => {
     if (
-      this.props.semana.teamwork.creadasTarde &&
-      this.props.semana.teamwork.creadasTarde.length > 0
+      semana.teamwork.creadasTarde &&
+      semana.teamwork.creadasTarde.length > 0
     ) {
       return (
         <div>
           <div className="row text-center">
             <div className="titleIndividuales">Creadas Tarde</div>
           </div>
-          {this.renderTeamworkIndividual(
-            this.props.semana.teamwork.creadasTarde,
+          {renderTeamworkIndividual(
+            semana.teamwork.creadasTarde,
             "CREADASTARDE"
           )}
         </div>
@@ -282,15 +273,15 @@ class Semana extends React.Component {
     }
   };
 
-  renderTeamwork = () => {
-    if (this.props.semana.teamwork !== undefined) {
+  const renderTeamwork = () => {
+    if (semana.teamwork !== undefined) {
       return (
         <div>
-          {this.renderTeamworkIndividual(
-            this.props.semana.teamwork.semanal,
+          {renderTeamworkIndividual(
+            semana.teamwork.semanal,
             "INDIVIDUAL"
           )}
-          {this.renderTeamworkTarde()}
+          {renderTeamworkTarde()}
         </div>
       );
     } else {
@@ -298,22 +289,22 @@ class Semana extends React.Component {
     }
   };
 
-  renderBody = () => {
-    if (this.state.open) {
+  const renderBody = () => {
+    if (open) {
       return (
         <div className="bodySemana">
           <div className="feedback">
             <div className="row">
               <div className="titlesSemana">Feedback:</div>
             </div>
-            {this.renderFeedbacks()}
+            {renderFeedbacks()}
           </div>
           <hr className="hrSemana" />
           <div className="teamwork">
             <div className="row">
               <div className="titlesSemana titleTeamwork">Teamwork:</div>
             </div>
-            {this.renderTeamwork()}
+            {renderTeamwork()}
           </div>
         </div>
       );
@@ -322,27 +313,26 @@ class Semana extends React.Component {
     }
   };
 
-  render() {
-    return (
-      <Card className="cardSemana" border="dark" text="white">
-        <Card.Header
-          className="cardHeader "
-          onClick={() => this.setState({ open: !this.state.open })}
-        >
-          <Card.Title>
-            <div className="row filaTitleSemana noselect">
-              <div className="col-6 text-center nombreSemana">
-                {this.props.semana.nombre}
-              </div>
-              <div className="col-6 fechaSemana">
-                {this.props.semana.inicio + " - " + this.props.semana.fin}
-              </div>
+  return (
+    <Card className="cardSemana" border="dark" text="white">
+      <Card.Header
+        className="cardHeader "
+        onClick={() => setOpen(!open)}
+      >
+        <Card.Title>
+          <div className="row filaTitleSemana noselect">
+            <div className="col-6 text-center nombreSemana">
+              {semana.nombre}
             </div>
-          </Card.Title>
-        </Card.Header>
-        {this.renderBody()}
-      </Card>
-    );
-  }
+            <div className="col-6 fechaSemana">
+              {semana.inicio + " - " + semana.fin}
+            </div>
+          </div>
+        </Card.Title>
+      </Card.Header>
+      {renderBody()}
+    </Card>
+  );
 }
+
 export default Semana;
