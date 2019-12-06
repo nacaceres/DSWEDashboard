@@ -1,11 +1,13 @@
 const express = require("express");
 var request = require("request"); // "Request" library
 const router = express.Router();
-
+//const ldap = require("ldapjs");
 const MyMongoLib = require("../MyMongoLib.js");
 
 const myMongoLib = MyMongoLib();
-
+//let client = ldap.createClient({
+//  url: ""
+//});
 /* GET home page. */
 router.get("/", function(req, res) {
   res.render("index", { title: "Express" });
@@ -83,20 +85,31 @@ router.get("/grupo", (req, res) => {
 });
 
 router.post("/login", function(req, res) {
-  var options = {
-    url:
-      "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?usuario=" +
-      req.body.username
-  };
+  //client.bind(req.body.username, req.body.password, function(err) {
+    //if(err===null)
+    //{
+      var options = {
+        url:
+        "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?usuario=" +
+        req.body.username
+      };
 
-  // use the access token to access the Spotify Web API
-  request.get(options, function(error, response, body) {
-    if (!error) {
-      res.json(body);
-    } else {
-      res.send(error);
-    }
-  });
+      // use the access token to access the Spotify Web API
+      request.get(options, function(error, response, body) {
+        if (!error) {
+          res.json(body);
+        } else {
+          res.send(error);
+        }
+      });
+    //}
+    //else
+    //{
+      //let usuario={error:"ErrorAuthUniandes"};
+      //res.send(usuario);
+    //}
+  //});
+
 });
 
 module.exports = router;

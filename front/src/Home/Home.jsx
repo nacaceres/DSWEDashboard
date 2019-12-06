@@ -8,12 +8,17 @@ class Home extends React.Component {
     super(props);
     this.state = {
       isLoading: false,
-      username: ""
+      username: "",
+      password: ""
     };
   }
 
   handleChange(event) {
     this.setState({ username: event.target.value });
+  }
+
+  handleChangePass(event) {
+    this.setState({ password: event.target.value });
   }
 
   handleKey = event => {
@@ -28,7 +33,7 @@ class Home extends React.Component {
     });
 
     let username = this.state.username;
-    let password = "123456";
+    let password = this.state.password;
 
     fetch("/login", {
       method: "POST",
@@ -46,6 +51,8 @@ class Home extends React.Component {
         this.setState({
           isLoading: false
         });
+        if(data.error===undefined)
+        {
         var usuario = JSON.parse(data).usuario;
         usuario.correo = username;
         if (!usuario.nombre) {
@@ -61,6 +68,10 @@ class Home extends React.Component {
               usuario.secciones[0].grupos[0]
           );
         }
+      }
+      else{
+        alert("Usuario o contraseña incorrectos")
+      }
       });
   };
 
@@ -103,6 +114,8 @@ class Home extends React.Component {
                         className="loginImp claveImp"
                         placeholder="Clave"
                         aria-label="Clave"
+                        value={this.state.password}
+                        onChange={this.handleChangePass.bind(this)}
                         onKeyDown={this.handleKey.bind(this)}
                       />
                     </div>
