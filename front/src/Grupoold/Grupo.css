@@ -1,0 +1,81 @@
+.lblNombreGrupo {
+  font-family: "Fira Sans", sans-serif;
+  color: white;
+  text-shadow: 2px 0 #343a40, 0 5px #343a40, 2px 0 #343a40, 0 5px #343a40;
+  font-size: 5em;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 5vh;
+}
+
+.infoGrupo {
+  height: 25vh;
+}
+
+.rowInfo {
+  margin-top: 20vh;
+}
+
+.rowInfoApis {
+  height: 25vh;
+}
+
+.rowInfoAnalisis {
+  height: 10vh;
+}
+.sonar {
+  margin-top: 5vh;
+  cursor: pointer;
+}
+.colInfo {
+  height: 100%;
+}
+
+.contImg {
+  max-height: 15vh;
+  cursor: pointer;
+}
+
+.contBallImg {
+  margin-top: 2vh;
+  cursor: pointer;
+}
+
+.analisis {
+  margin-top: 5vh;
+  cursor: pointer;
+}
+.analisisImg {
+  margin-top: 10%;
+  cursor: pointer;
+}
+
+.titleCard {
+  font-size: 1.5em;
+  color: #52a4ff;
+}
+.cardSemanas {
+  margin-top: 10vh;
+}
+
+.botonRojo {
+  background-color: #d9534f;
+  color: white;
+  font-size: 18px;
+  border: 1px solid #d9534f;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+  outline: 0;
+}
+
+.botonVerde2 {
+  background-color: #72b324;
+  color: white;
+  font-size: 18px;
+  border: 1px solid #72b324;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 5px;
+  outline: 0;
+}

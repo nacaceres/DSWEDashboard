@@ -1,0 +1,97 @@
+.cardSemana {
+  background-color: #4f6367;
+  margin-bottom: 2vh;
+  border-radius: 2vh;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+}
+.titleTeamwork {
+  margin-bottom: 1vh;
+}
+.bodySemana {
+  border-top: 2px solid #343a40;
+}
+.cardHeader {
+  height: 9vh;
+  cursor: pointer;
+}
+
+.filaTitleSemana {
+  text-align: middle;
+  text-align: center;
+  font-size: 3vh;
+}
+
+.nombreSemana {
+  font-size: 5vh;
+}
+
+.fechaSemana {
+  margin-top: 1vh;
+}
+
+.cardHeader:hover {
+  border-radius: 2vh;
+  border: 2px solid white;
+}
+
+.hrSemana {
+  background-color: white;
+  width: 90%;
+  height: 2px;
+  border: 0;
+  margin-top: 0;
+  margin-bottom: 1vh;
+}
+
+.titlesSemana {
+  margin-left: 7.5%;
+  font-size: 3vh;
+  font-weight: bold;
+}
+.infoFail {
+  width: 100%;
+  text-align: center;
+  font-size: 3vh;
+  font-weight: lighter;
+}
+
+.filaPreguntaGrupal {
+  margin-left: 5%;
+  margin-bottom: 2%;
+  text-align: middle;
+  vertical-align: middle;
+}
+
+.titleGrupales {
+  width: 100%;
+  font-size: 3.5vh;
+  text-align: center;
+}
+
+.notaCont {
+  width: 5vh;
+  height: 5vh;
+  border-radius: 50%;
+  border: 3px solid darkgray;
+  margin-top: 1vh;
+}
+
+.addComment {
+  text-align: left;
+  font-size: 3vh;
+  margin-top: 1vh;
+  cursor: pointer;
+}
+
+.titleIndividuales {
+  width: 100%;
+  font-size: 3vh;
+  text-align: center;
+}
+
+.linkEncuesta {
+  cursor: pointer;
+  font-size: 2vh;
+  text-decoration: underline;
+}

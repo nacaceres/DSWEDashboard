@@ -36,7 +36,8 @@ let timer = () => {
 let refreshGrupos = secciones => {
   let grupo = null;
   let numero = 0;
-  for (let index = 0; index < secciones.length; index++) {
+  let index = 0;
+  for (index = 0; index < secciones.length; index++) {
     let seccion = secciones[index];
     numero = seccion.numero;
     if (seccion.grupos.length > 0) {
@@ -56,25 +57,36 @@ let refreshGrupos = secciones => {
     request.get(options, function(error, response, body) {
       if (!error) {
         var grupoJSON = JSON.parse(body).seccion;
-        myMongoLib
-          .deleteGrupo(numero, grupo)
-          .then(docs => {
-            if (grupoJSON) {
+        if (JSON.parse(body).estado === "OKFETCHSICAPI") {
+          myMongoLib
+            .deleteGrupo(numero, grupo)
+            .then(docs => {
               myMongoLib
                 .postGrupo(grupoJSON)
                 .then(docs => {
+                  console.log("OK"+grupo)
                   refreshGrupos(secciones);
                 })
                 .catch(err => {
                   console.log(err);
                 });
-            } else {
-              refreshGrupos(secciones);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+            })
+            .catch(err => {
+              myMongoLib
+              .postGrupo(grupoJSON)
+              .then(docs => {
+                console.log("OKDel"+grupo)
+                refreshGrupos(secciones);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+            });
+        } else {
+          console.log("FALLOO");
+          // secciones[index].push(grupo);
+          // refreshGrupos(secciones);
+        }
       } else {
         console.log(error);
       }
