@@ -106,13 +106,7 @@ class Comentarios extends Component {
     } else if (this.state.chat) {
     }
   }
-  renderButton(state) {
-    if (state === "Pendiente") {
-      return "Responder";
-    } else {
-      return "Modificar";
-    }
-  }
+
   renderEncargado(encargado) {
     if (encargado !== undefined) {
       return encargado;
