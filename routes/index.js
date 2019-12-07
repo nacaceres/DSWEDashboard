@@ -1,12 +1,17 @@
 const express = require("express");
 var request = require("request"); // "Request" library
 const router = express.Router();
-//const ldap = require("ldapjs");
+//const ldapjs = require("ldapjs");
 const MyMongoLib = require("../MyMongoLib.js");
 
 const myMongoLib = MyMongoLib();
-//let client = ldap.createClient({
-//  url: ""
+//var options = {
+//  url: "ldap://adua.uniandes.edu.co:389",
+//  reconnect: true
+//};
+//var client = ldapjs.createClient(options);
+//client.on("error", function(err) {
+//  console.warn("LDAP connection failed, but fear not, it will reconnect OK", err);
 //});
 /* GET home page. */
 router.get("/", function(req, res) {
@@ -85,9 +90,9 @@ router.get("/grupo", (req, res) => {
 });
 
 router.post("/login", function(req, res) {
-  //client.bind(req.body.username, req.body.password, function(err) {
-    //if(err===null)
-    //{
+//  client.bind(req.body.username, req.body.password, function(err) {
+//    if(err===null)
+//    {
       var options = {
         url:
         "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec?usuario=" +
@@ -102,13 +107,13 @@ router.post("/login", function(req, res) {
           res.send(error);
         }
       });
-    //}
-    //else
-    //{
-      //let usuario={error:"ErrorAuthUniandes"};
-      //res.send(usuario);
-    //}
-  //});
+//    }
+//    else
+//    {
+//      let usuario={error:"ErrorAuthUniandes"};
+//      res.send(usuario);
+//    }
+//  });
 
 });
 
