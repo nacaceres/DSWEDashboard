@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap/";
 import Chat from "./Chat/Chat.jsx";
+import Comentarios from "./Comentarios/Comentarios.jsx";
 import Home from "./Home/Home.jsx";
 import Grupo from "./Grupo/Grupo.jsx";
 import "./App.css";
@@ -97,7 +98,9 @@ function App(props) {
   function irAClaims() {
     props.history.push("/comentarios");
   }
-
+  function irAClaims2() {
+    props.history.push("/comentarios2");
+  }
   function renderGrupos(seccion) {
     return seccion.grupos.map(grupo => {
       let idGrupo =
@@ -176,6 +179,9 @@ function App(props) {
         <NavDropdown.Item href="#action/3.3" onClick={irAClaims}>
           Comentarios
         </NavDropdown.Item>
+        <NavDropdown.Item href="#action/3.4" onClick={irAClaims2}>
+          Comentarios2
+        </NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item
           onClick={() => {
@@ -241,6 +247,14 @@ function App(props) {
           render={() => (
             <div>
               <Chat claims={claims} rol={usuario.rol} correo={usuario.correo} />
+            </div>
+          )}
+        />
+        <Route
+          path="/comentarios2"
+          render={() => (
+            <div>
+              <Comentarios claims={claims} rol={usuario.rol} correo={usuario.correo} />
             </div>
           )}
         />
