@@ -382,7 +382,15 @@ class Comentarios extends Component {
       });
     }
   };
-
+  infoReclamo()
+  {
+    if(this.state.chat)
+    {
+      return(
+        <div>Aca va la parte de Varon</div>
+        )
+    }
+  }
   render() {
     return (
       <div className="container comentarios">
@@ -397,7 +405,7 @@ class Comentarios extends Component {
               <div className="inbox_chat">{this.renderMessages()}</div>
             </div>
             <div className="mesgs">
-              <div className="msg_history">{this.renderChat()}</div>
+              <div className="msg_history">{this.infoReclamo()}{this.renderChat()}</div>
               <div className="type_msg">
                 <div className="input_msg_write">
                   <form onSubmit={this.handleSubmit}>
