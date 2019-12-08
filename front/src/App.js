@@ -172,7 +172,7 @@ function App(props) {
   function renderNav() {
     if (usuario.rol !== "GUEST") {
       return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand="lg" bg="dark" fixed="top" variant="dark">
           <Navbar.Brand>Desarrollo de Software en Equipo</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -187,7 +187,7 @@ function App(props) {
   return (
     <div className="App">
       {renderNav()}
-      <Switch className="container-fluid">
+      <Switch>
         <Route
           exact
           path="/"

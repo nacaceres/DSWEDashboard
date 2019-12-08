@@ -1,81 +1,122 @@
+.contGrupo {
+  background-color: white;
+  height: 100%;
+  padding-top: 7.5vh;
+}
+.filaSemana {
+  margin-bottom: 5%;
+}
+
+.btnSemana {
+  width: 75%;
+}
+
+.vl {
+  border: none;
+  border-left: 1px solid hsla(200, 10%, 50%, 100);
+  height: 100%;
+  width: 1px;
+}
+.colSemanas {
+  height: 92.5vh;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.colSemanas::-webkit-scrollbar,
+.colGrupal::-webkit-scrollbar,
+.colIndividual::-webkit-scrollbar {
+  width: 12px; /* for vertical scrollbars */
+  height: 12px;
+}
+
+.colSemanas::-webkit-scrollbar-track,
+.colGrupal::-webkit-scrollbar-track,
+.colIndividual::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.colSemanas::-webkit-scrollbar-thumb,
+.colGrupal::-webkit-scrollbar-thumb,
+.colIndividual::-webkit-scrollbar-thumb {
+  background-color: rgb(75, 124, 155, 0.8);
+  border-radius: 10px;
+}
+
 .lblNombreGrupo {
   font-family: "Fira Sans", sans-serif;
-  color: white;
-  text-shadow: 2px 0 #343a40, 0 5px #343a40, 2px 0 #343a40, 0 5px #343a40;
-  font-size: 5em;
+  color: #4f6367;
+  text-shadow: 1px 0 #343a40, 0 2px #343a40, 1px 0 #343a40, 0 2px #343a40;
+  font-size: 5vh;
   font-weight: bold;
   text-align: center;
-  margin-top: 5vh;
+  margin-top: 2.5vh;
+  margin-bottom: 2.5vh;
 }
-
-.infoGrupo {
-  height: 25vh;
+.btnEstadoActual {
+  font-weight: bold;
 }
-
-.rowInfo {
-  margin-top: 20vh;
+.colEstadoActual {
+  display: flex;
+  align-items: center;
 }
-
-.rowInfoApis {
-  height: 25vh;
-}
-
-.rowInfoAnalisis {
+.filaNombre {
   height: 10vh;
 }
-.sonar {
-  margin-top: 5vh;
-  cursor: pointer;
-}
-.colInfo {
-  height: 100%;
+
+.infoSemanaCon {
+  height: 40.5vh;
 }
 
-.contImg {
-  max-height: 15vh;
-  cursor: pointer;
+.filaClpsEstadoActual {
+  background-color: green;
+  height: 35vh;
 }
 
-.contBallImg {
-  margin-top: 2vh;
-  cursor: pointer;
+.infoSemanaSin {
+  height: 75.5vh;
 }
 
-.analisis {
-  margin-top: 5vh;
-  cursor: pointer;
-}
-.analisisImg {
-  margin-top: 10%;
-  cursor: pointer;
+.colGrupal,
+.colIndividual {
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
-.titleCard {
-  font-size: 1.5em;
-  color: #52a4ff;
+.nombreFechaLbl {
+  font-size: 3vh;
+  margin-bottom: 1vh;
 }
-.cardSemanas {
-  margin-top: 10vh;
+.titleInfoSemana {
+  text-align: center;
+  font-size: 3vh;
+  font-weight: bold;
+  color: #343a40;
+}
+.hrTitleInfo {
+  margin-top: 0.5vh;
+  width: 40%;
+  height: 2px;
+  border: 0;
+  background-color: #343a40;
 }
 
-.botonRojo {
-  background-color: #d9534f;
-  color: white;
-  font-size: 18px;
-  border: 1px solid #d9534f;
+.linkEncuesta {
   cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 5px;
-  outline: 0;
+  font-size: 2vh;
+  text-decoration: underline;
 }
 
-.botonVerde2 {
-  background-color: #72b324;
-  color: white;
-  font-size: 18px;
-  border: 1px solid #72b324;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 5px;
-  outline: 0;
+.titlesSemana {
+  margin-left: 7.5%;
+  font-size: 2vh;
+  font-weight: bold;
+}
+
+.notaCont {
+  width: 5vh;
+  height: 5vh;
+  border-radius: 50%;
+  border: 3px solid darkgray;
+  margin-top: 1vh;
 }

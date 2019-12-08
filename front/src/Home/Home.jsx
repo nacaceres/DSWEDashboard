@@ -83,7 +83,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container contHome">
         <div className="row filaLogin">
           <Card className="mx-auto cardLogin">
             <Card.Body>
