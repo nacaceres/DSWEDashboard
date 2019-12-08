@@ -3,7 +3,7 @@ import { Card, Form, Modal, Nav } from "react-bootstrap";
 import "./Grupo.css";
 import { withRouter } from "react-router-dom";
 
-import Semana from "./Semana/Semana.jsx.js";
+import Semana from "./Semana/Semana.jsx";
 
 function Grupo(props) {
   const [modalShow, setModalShow] = React.useState(false);

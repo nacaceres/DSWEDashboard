@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Nav, NavDropdown, Navbar } from "react-bootstrap/";
-import Chat from "./Chat/Chat.jsx";
 import Comentarios from "./Comentarios/Comentarios.jsx";
 import Home from "./Home/Home.jsx";
 import Grupo from "./Grupo/Grupo.jsx";
@@ -25,36 +24,7 @@ function App(props) {
     ws.onopen = () => {
       ws.onmessage = msg => {
         if (usuario.rol !== "GUEST") {
-          let copy = claims.slice();
-          let update = JSON.parse(msg.data);
-          let caso1 = false;
-          let i;
-          for (i in claims) {
-            if (claims[i]._id === update._id) {
-              copy.splice(i, 1);
-              copy.push(update);
-              setClaims(copy);
-              caso1 = true;
-              break;
-            }
-          }
-          if (!caso1) {
-            if (usuario.rol === "PROFESOR" || usuario.rol === "MONITOR") {
-              let j;
-              for (j in usuario.secciones) {
-                if (usuario.secciones[j].numero === update.section) {
-                  copy.unshift(update);
-                  setClaims(copy);
-                  break;
-                }
-              }
-            } else {
-              if (update.student === usuario.correo) {
-                copy.unshift(update);
-                setClaims(copy);
-              }
-            }
-          }
+          actualizarClaims(usuario)
         }
       };
     };
@@ -68,8 +38,12 @@ function App(props) {
       numero: usuario.secciones[0].numero,
       grupo: usuario.secciones[0].grupos[0]
     });
+    actualizarClaims(usuario)
+  }
+  function actualizarClaims(usuario)
+  {
     let req = usuario;
-    fetch("claims", {
+    fetch("/claims", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -81,12 +55,13 @@ function App(props) {
       .then(data => {
         if (data.err) {
           console.log("Hubo un error haciendo el fetch de los claims");
-        } else {
+        }
+        else {
           data.sort(function(a, b) {
-            if (a.state === "Contestado" && b.state === "Pendiente") {
+            if (a.state === "Resuelto" && (b.state === "Pendiente"||b.state === "Contestado")) {
               return 1;
             }
-            if (a.state === "Pendiente" && b.state === "Contestado") {
+            if ((a.state === "Pendiente"||a.state === "Contestado") && b.state === "Resuelto") {
               return -1;
             }
             return 0;
@@ -97,9 +72,6 @@ function App(props) {
   }
   function irAClaims() {
     props.history.push("/comentarios");
-  }
-  function irAClaims2() {
-    props.history.push("/comentarios2");
   }
   function renderGrupos(seccion) {
     return seccion.grupos.map(grupo => {
@@ -179,9 +151,6 @@ function App(props) {
         <NavDropdown.Item href="#action/3.3" onClick={irAClaims}>
           Comentarios
         </NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.4" onClick={irAClaims2}>
-          Comentarios2
-        </NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item
           onClick={() => {
@@ -244,14 +213,6 @@ function App(props) {
         />
         <Route
           path="/comentarios"
-          render={() => (
-            <div>
-              <Chat claims={claims} rol={usuario.rol} correo={usuario.correo} />
-            </div>
-          )}
-        />
-        <Route
-          path="/comentarios2"
           render={() => (
             <div>
               <Comentarios claims={claims} rol={usuario.rol} correo={usuario.correo} />

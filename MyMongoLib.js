@@ -114,7 +114,61 @@ const MyMongoLib = function() {
         return messageCol;
       });
     });
-  MyMongoLib.postAnswer = (mongoId, answerParam, stateParam, teacherParam) =>
+  MyMongoLib.postAnswer = (mongoId, messageParam, stateParam, teacherParam) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      conn.then(client => {
+        const db = client.db(dbName);
+        const messageCol = db.collection("messages");
+        let fixId = new ObjectId(mongoId);
+        let fechaActParam = messageParam.date;
+        messageCol
+          .updateOne(
+            { _id: fixId },
+            {
+              $set: {
+                state: stateParam,
+                teacher: teacherParam,
+                fechaAct: fechaActParam
+              },
+              $push: {
+                messages: messageParam
+              }
+            }
+          )
+          .then(resolve)
+          .catch(reject);
+
+        return messageCol;
+      });
+    });
+  MyMongoLib.postMessage = (mongoId, messageParam) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      conn.then(client => {
+        const db = client.db(dbName);
+        const messageCol = db.collection("messages");
+        let fixId = new ObjectId(mongoId);
+        let fechaActParam = messageParam.date;
+        messageCol
+          .updateOne(
+            { _id: fixId },
+            {
+              $set: {
+                fechaAct: fechaActParam
+              },
+              $push: {
+                messages: messageParam
+              }
+            }
+          )
+          .then(resolve)
+          .catch(reject);
+
+        return messageCol;
+      });
+    });
+  MyMongoLib.putState = (mongoId, stateParam) =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
       conn.then(client => {
@@ -126,9 +180,7 @@ const MyMongoLib = function() {
             { _id: fixId },
             {
               $set: {
-                answer: answerParam,
-                state: stateParam,
-                teacher: teacherParam
+                state: stateParam
               }
             }
           )

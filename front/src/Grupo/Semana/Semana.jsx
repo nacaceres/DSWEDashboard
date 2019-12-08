@@ -1,7 +1,7 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import "./Semana.css";
-import Teamwork from "./Teamwork/Teamwork.jsx.js";
+import Teamwork from "./Teamwork/Teamwork.jsx";
 
 class Semana extends React.Component {
   constructor(props) {

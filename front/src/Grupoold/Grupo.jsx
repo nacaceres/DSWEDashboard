@@ -26,7 +26,13 @@ function Grupo(props) {
   function handelConfirm() {
     let req = {};
     req["id_feedback"] = id;
-    req["complain"] = commentario;
+    let lista = []
+    lista.push({
+      role:"ESTUDIANTE",
+      date:Date(),
+      message:commentario
+    })
+    req["messages"] = lista;
     req["student"] = props.usuario.correo;
     req["section"] = props.usuario.secciones[0].numero;
     console.log(req);

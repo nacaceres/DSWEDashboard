@@ -33,22 +33,38 @@ router.post("/claims", (req, res) => {
 router.post("/addclaim", function(req, res) {
   var complain = req.body;
   complain.state = "Pendiente";
+  complain.fechaAct = complain.messages[0].date;
   myMongoLib
     .postComplain(complain)
     .then(docs => res.send(docs))
     .catch(err => res.send({ err: true, msg: err }));
 });
 router.post("/addanswer", function(req, res) {
-  let answer = req.body.answer;
+  let message = req.body.message;
   let mongoId = req.body._id;
   let state = req.body.state;
   let teacher = req.body.teacher;
   myMongoLib
-    .postAnswer(mongoId, answer, state, teacher)
+    .postAnswer(mongoId, message, state, teacher)
     .then(docs => res.send(docs))
     .catch(err => res.send({ err: true, msg: err }));
 });
-
+router.post("/addmessage", function(req, res) {
+  let message = req.body.message;
+  let mongoId = req.body._id;
+  myMongoLib
+    .postMessage(mongoId, message)
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+router.post("/changestate", function(req, res) {
+  let state = req.body.state;
+  let mongoId = req.body._id;
+  myMongoLib
+    .putState(mongoId, state)
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
 router.get("/grupo", (req, res) => {
   if (req.query && req.query.seccion && req.query.grupo) {
     let seccion = parseInt(req.query.seccion);
