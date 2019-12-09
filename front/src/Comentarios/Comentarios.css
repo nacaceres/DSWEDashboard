@@ -1,7 +1,8 @@
 .comentarios{
+  padding-top: 5.7vh;
   background-color: white;
   max-width:90%;
-  height: 93vh;
+  height: 96vh;
 }
 .container{margin:auto;}
 img{ max-width:100%;}

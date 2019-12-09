@@ -14,8 +14,8 @@
 }
 
 .dropDownSeccion {
-  padding-left: 10%;
-  padding-right: 10%;
+  margin-left: 10%;
+  margin-right: 10%;
   font-weight: bold;
   text-align: center;
 }
@@ -38,4 +38,27 @@ h1 {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Chome - Opera */
 }
+.brand{
+  cursor: pointer;
+}
 
+.inbox{
+  background: #343A40 none repeat scroll 0 0;
+  border: medium none;
+  color: #fff;
+  cursor: pointer;
+}
+.icon
+{
+  margin-top: 4%;
+  font-size: 20px;
+}
+.numero{
+  font-size: 14px;
+  background-color: red;
+  text-align: center;
+  margin-bottom: 4%;
+  padding-left: 3%;
+  border-radius: 100%;
+  margin-left: -10%;
+}

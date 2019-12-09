@@ -382,61 +382,60 @@ class Comentarios extends Component {
       });
     }
   };
-  infoReclamo()
-  {
-    if(this.state.chat)
-    {
-      return(
-        <div>Aca va la parte de Varon</div>
-        )
+  infoReclamo() {
+    if (this.state.chat) {
+      return <div>Aca va la parte de Varon</div>;
     }
   }
   render() {
     return (
-      <div className="container comentarios">
-        <div className="messaging">
-          <div className="inbox_msg">
-            <div className="inbox_people">
-              <div className="headind_srch">
-                <div className="recent_heading">
-                  <h4>Comentarios</h4>
+        <div className=" container comentarios">
+          <div className="messaging">
+            <div className="inbox_msg">
+              <div className="inbox_people">
+                <div className="headind_srch">
+                  <div className="recent_heading">
+                    <h4>Comentarios</h4>
+                  </div>
                 </div>
+                <div className="inbox_chat">{this.renderMessages()}</div>
               </div>
-              <div className="inbox_chat">{this.renderMessages()}</div>
-            </div>
-            <div className="mesgs">
-              <div className="msg_history">{this.infoReclamo()}{this.renderChat()}</div>
-              <div className="type_msg">
-                <div className="input_msg_write">
-                  <form onSubmit={this.handleSubmit}>
-                    <input
-                      type="text"
-                      className="write_msg"
-                      placeholder="Type a message"
-                      value={this.state.inputMessage}
-                      onChange={this.handleChange.bind(this)}
-                    />
-                  </form>
-                  <button
-                    className="msg_send_btn"
-                    type="button"
-                    onClick={() => this.handleSubmit(this, "boton")}
-                  >
-                    <i className="fa fa-paper-plane-o" aria-hidden="true"></i>
-                  </button>
-                  <button
-                    className="resolve_btn"
-                    type="button"
-                    onClick={() => this.handleCheck(this)}
-                  >
-                    <i className="fas fa-check" aria-hidden="true"></i>
-                  </button>
+              <div className="mesgs">
+                <div className="msg_history">
+                  {this.infoReclamo()}
+                  {this.renderChat()}
+                </div>
+                <div className="type_msg">
+                  <div className="input_msg_write">
+                    <form onSubmit={this.handleSubmit}>
+                      <input
+                        type="text"
+                        className="write_msg"
+                        placeholder="Type a message"
+                        value={this.state.inputMessage}
+                        onChange={this.handleChange.bind(this)}
+                      />
+                    </form>
+                    <button
+                      className="msg_send_btn"
+                      type="button"
+                      onClick={() => this.handleSubmit(this, "boton")}
+                    >
+                      <i className="fa fa-paper-plane-o" aria-hidden="true"></i>
+                    </button>
+                    <button
+                      className="resolve_btn"
+                      type="button"
+                      onClick={() => this.handleCheck(this)}
+                    >
+                      <i className="fas fa-check" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
     );
   }
 }
