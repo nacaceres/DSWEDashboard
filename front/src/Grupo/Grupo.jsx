@@ -3,6 +3,7 @@ import { Form, Modal, Card } from "react-bootstrap";
 import "./Grupo.css";
 import { withRouter } from "react-router-dom";
 import Teamwork from "./Teamwork/Teamwork.jsx";
+import CardIndiv from "./CardIndiv/CardIndiv.jsx";
 
 function Grupo(props) {
   const [modalShow, setModalShow] = React.useState(false);
@@ -37,7 +38,6 @@ function Grupo(props) {
     req["messages"] = lista;
     req["student"] = props.usuario.correo;
     req["section"] = props.usuario.secciones[0].numero;
-    console.log(req);
     fetch("/addclaim", {
       method: "POST",
       headers: {
@@ -48,7 +48,6 @@ function Grupo(props) {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         if (data.err) {
           console.log("Hubo un error haciendo el post del reclamo");
         } else {
@@ -86,8 +85,7 @@ function Grupo(props) {
             }
           });
         });
-        if (!(encontrado && encontrado2) && false) {
-          //TODO QUITAR FALSE
+        if (!(encontrado && encontrado2)) {
           props.history.push("/");
         } else {
           fetch(
@@ -587,6 +585,36 @@ function Grupo(props) {
     );
   }
 
+  function renderTeamworkIndivTarde() {
+   
+    if (
+      semanaActual !== null &&
+      semanaActual.teamwork !== undefined &&
+      semanaActual.teamwork.creadasTarde.length > 0
+    ) {
+      let sem = null;
+      semanaActual.teamwork.creadasTarde.forEach(semanal => {
+        if (semanal.correo === props.usuario.correo) {
+          sem = semanal;
+        }
+      });
+      if (sem !== null) {
+        return (
+          <div>
+            <div className="row">
+              <div className="titlesSemana">Creadas Tarde:</div>
+            </div>
+            {renderTeamwork("INDIVIDUAL", sem)}
+          </div>
+        );
+      } else {
+        return <div></div>;
+      }
+    } else {
+      return <div></div>;
+    }
+  }
+
   function renderTeamworkIndiv() {
     if (
       semanaActual !== null &&
@@ -595,7 +623,7 @@ function Grupo(props) {
     ) {
       let sem = null;
       semanaActual.teamwork.semanal.forEach(semanal => {
-        if ((semanal.correo = props.usuario.correo)) {
+        if (semanal.correo === props.usuario.correo) {
           sem = semanal;
         }
       });
@@ -609,8 +637,19 @@ function Grupo(props) {
     }
   }
 
+  function renderGrupoIndiv() {
+    return infoGrupo.grupo.estudiantes.map(estudiante => {
+      return (
+        <CardIndiv
+          key={"CARDINDIV" + estudiante.correo}
+          semana={semanaActual}
+          estudiante={estudiante}
+        />
+      );
+    });
+  }
+
   function renderInfoIndividual() {
-    console.log(semanaActual);
     if (props.usuario.rol === "ESTUDIANTE") {
       return (
         <div>
@@ -622,46 +661,12 @@ function Grupo(props) {
             <div className="titlesSemana">Teamwork:</div>
           </div>
           {renderTeamworkIndiv()}
+          {renderTeamworkIndivTarde()}
         </div>
       );
     } else {
-      return <div></div>;
+      return renderGrupoIndiv();
     }
-
-    // return grupo.map(semanal => {
-    //   if (
-    //     usuario.rol === "PROFESOR" ||
-    //     usuario.rol === "MONITOR" ||
-    //     (usuario.rol === "ESTUDIANTE" && semanal.correo === usuario.correo)
-    //   ) {
-    //     return (
-    //       <Teamwork
-    //         key={
-    //           "TEAMWORKINDIVIDUAL" +
-    //           nombre +
-    //           this.props.semana.nombre +
-    //           this.nombre +
-    //           semanal.nombre
-    //         }
-    //         usuario={this.props.usuario}
-    //         teamwork={semanal}
-    //         crearComentario={this.props.crearComentario}
-    //       />
-    //     );
-    //   } else {
-    //     return (
-    //       <div
-    //         key={
-    //           "TEAMWORKINDIVIDUAL" +
-    //           nombre +
-    //           this.props.semana.nombre +
-    //           this.nombre +
-    //           semanal.nombre
-    //         }
-    //       ></div>
-    //     );
-    //   }
-    // });
   }
 
   function renderInfoSemana() {

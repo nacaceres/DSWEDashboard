@@ -1,0 +1,34 @@
+.cardIndiv {
+  width: 100%;
+  background-color: transparent;
+  color: #343a40;
+  font-weight: bold;
+  margin-bottom: 2vh;
+  border-radius: 2vh;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-width: 2px;
+  background-color: white;
+}
+
+.cardHeaderIndiv {
+  height: 6.5vh;
+  cursor: pointer;
+  background-color:transparent;
+  border: 0;
+}
+
+.filaTitleIndiv {
+  color: #343a40;
+  font-weight: bold;
+  text-align: center;
+  font-size: 2vh;
+  padding-top: 0.75vh;
+}
+
+.bodyCardIndiv{
+  border-top: 1px solid #999999;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 1vh;
+}

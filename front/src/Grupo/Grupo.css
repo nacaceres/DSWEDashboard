@@ -108,6 +108,8 @@
 
 .titlesSemana {
   margin-left: 7.5%;
+  margin-top: 2vh;
+  margin-bottom:0.5vh;
   font-size: 2vh;
   font-weight: bold;
 }
