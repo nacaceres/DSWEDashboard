@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from "react"; // sguzmanm: Why not import "useState" here?
 import { Card, Form, Modal, Nav } from "react-bootstrap";
 import "./Grupo.css";
 import { withRouter } from "react-router-dom";
@@ -13,7 +13,7 @@ function Grupo(props) {
 
   function crearComentario(tipo, val) {
     if (tipo === "FEEDBACK") {
-      val.id = infoGrupo.numero + "-" + infoGrupo.grupo.nombre + "" + val.id;
+      val.id = infoGrupo.numero + "-" + infoGrupo.grupo.nombre + "" + val.id; // sguzmanm: Why does the id need to be this long?
     }
     setId(val.id);
     setModalShow(true);
@@ -23,7 +23,7 @@ function Grupo(props) {
     setModalShow(false);
   }
 
-  function handelConfirm() {
+  function handelConfirm() { // sguzmanm: Careful with typos
     let req = {};
     req["id_feedback"] = id;
     let lista = [];
@@ -34,7 +34,7 @@ function Grupo(props) {
     });
     req["messages"] = lista;
     req["student"] = props.usuario.correo;
-    req["section"] = props.usuario.secciones[0].numero;
+    req["section"] = props.usuario.secciones[0].numero; // sguzmanm: Don´t assume that "seciones" will always have items
     console.log(req);
     fetch("/addclaim", {
       method: "POST",
@@ -63,7 +63,7 @@ function Grupo(props) {
       props.match.params.seccion === 0 ||
       props.match.params.grupo === undefined ||
       props.match.params.grupo === null
-    ) {
+    ) { // sguzmanm: Refactor this if condition to a function and please avoid nested ifs by using returns
       props.history.push("/");
     } else {
       if (
@@ -113,7 +113,7 @@ function Grupo(props) {
   });
 
   function renderNota(nota) {
-    let color = "red";
+    let color = "red"; // sguzmanm: These things could be constants and now that I´m seeing it, you´ve got duplicated code with GrupooId. Better to make this functions a shared file or something like this
     if (nota > 2) {
       color = "orange";
     }
