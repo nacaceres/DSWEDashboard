@@ -96,6 +96,7 @@ let refreshGrupos = secciones => {
 
 let refrescar = () => {
   console.log("Refrescando");
+  // you sould leave these google script urls as env variables, as it is anyone can access them and that is not so nice.
   var options = {
     url:
       "https://script.google.com/macros/s/AKfycbyaYhNNZ1Do_o4sI6mzFkzoDGr_UjJs1vZbrtk28Eye7JxXlAE/exec"
