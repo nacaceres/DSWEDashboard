@@ -276,7 +276,7 @@ class Comentarios extends Component {
                         {this.fixDate2(d.fechaAct)}
                       </span>
                     </h5>
-                    <p>
+                    <p className="seccion">
                       Seccion: {d.section} - Estado: {d.state}
                     </p>
                   </div>
@@ -306,7 +306,7 @@ class Comentarios extends Component {
                       {this.fixDate2(d.fechaAct)}
                     </span>
                   </h5>
-                  <p>
+                  <p className="seccion">
                     Seccion: {d.section} - Estado: {d.state}
                   </p>
                 </div>
@@ -348,7 +348,7 @@ class Comentarios extends Component {
                         {this.fixDate2(d.fechaAct)}
                       </span>
                     </h5>
-                    <p>
+                    <p className="seccion">
                       Seccion: {d.section} - Estado: {d.state}
                     </p>
                   </div>
@@ -378,7 +378,7 @@ class Comentarios extends Component {
                       {this.fixDate2(d.fechaAct)}
                     </span>
                   </h5>
-                  <p>
+                  <p className="seccion">
                     Seccion: {d.section} - Estado: {d.state}
                   </p>
                 </div>
@@ -391,29 +391,41 @@ class Comentarios extends Component {
   };
   infoReclamo() {
     //FALTA PONER BONITO
-    if (this.state.chat && this.state.claim !== undefined && this.state.claim.info !== undefined) {
-      if (
-        this.state.claim.info.tipo === "FEEDBACK"
-      ) {
+    if (
+      this.state.chat &&
+      this.state.claim !== undefined &&
+      this.state.claim.info !== undefined
+    ) {
+      if (this.state.claim.info.tipo === "FEEDBACK") {
         return (
           <div className="infoReclamo">
-            {"tipo:" +
-              this.state.claim.info.tipo +
-              " " +
-              "URL: " +
-              this.state.claim.info.encuestaEstudiantes}
+            <h1>{"Tipo: " + this.state.claim.info.tipo}</h1>
+            <p className="parrafoInfo">
+              <a
+                href={this.state.claim.info.encuestaEstudiantes}
+                target="_blank"
+              >
+                {this.state.claim.info.encuestaEstudiantes}
+              </a>
+            </p>
           </div>
         );
-      } else if ( 
-        this.state.claim.info.tipo === "TEAMWORK"
-      ) {
+      } else if (this.state.claim.info.tipo === "TEAMWORK") {
         return (
           <div className="infoReclamo">
-            {"tipo:" +
-              this.state.claim.info.tipo +
-              " " +
-              "URL: https://uniandesedu.teamwork.com/#/tasks/" +
-              this.state.claim.info.id}
+            <h1>{"Tipo: " + this.state.claim.info.tipo}</h1>
+            <p className="parrafoInfo">
+              <a
+                href={
+                  "https://uniandesedu.teamwork.com/#/tasks/" +
+                  this.state.claim.info.id
+                }
+                target="_blank"
+              >
+                {"https://uniandesedu.teamwork.com/#/tasks/" +
+                  this.state.claim.info.id}
+              </a>
+            </p>
           </div>
         );
       } else {
@@ -443,6 +455,7 @@ class Comentarios extends Component {
                 <div className="input_msg_write">
                   <form onSubmit={this.handleSubmit}>
                     <input
+                      aria-label="Message"
                       type="text"
                       className="write_msg"
                       placeholder="Type a message"
@@ -451,6 +464,7 @@ class Comentarios extends Component {
                     />
                   </form>
                   <button
+                    aria-label="Name"
                     className="msg_send_btn"
                     type="button"
                     onClick={() => this.handleSubmit(this, "boton")}
@@ -458,6 +472,7 @@ class Comentarios extends Component {
                     <i className="fa fa-paper-plane-o" aria-hidden="true"></i>
                   </button>
                   <button
+                    aria-label="Name"
                     className="resolve_btn"
                     type="button"
                     onClick={() => this.handleCheck(this)}

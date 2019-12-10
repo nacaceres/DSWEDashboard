@@ -200,7 +200,12 @@ function App(props) {
   }
   function renderUserComments() {
     return (
-      <button className="inbox" type="button" onClick={irAClaims}>
+      <button
+        aria-label="Name"
+        className="inbox"
+        type="button"
+        onClick={irAClaims}
+      >
         <div className="row">
           <div className="col-sm-4"></div>
           <i className="fas fa-inbox icon col-sm-2"></i>

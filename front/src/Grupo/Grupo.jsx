@@ -170,7 +170,7 @@ function Grupo(props) {
                       encuestaEstudiantes:
                         semanaActual.feedback.encuestaEstudiantes,
                       encuestaMonitor: semanaActual.feedback.encuestaMonitor,
-                      tipo:"FEEDBACK"
+                      tipo: "FEEDBACK"
                     };
                     crearComentario("FEEDBACK", val);
                   }}
@@ -556,7 +556,7 @@ function Grupo(props) {
                     encuestaEstudiantes:
                       semanaActual.feedback.encuestaEstudiantes,
                     encuestaMonitor: semanaActual.feedback.encuestaMonitor,
-                    tipo:"FEEDBACK"
+                    tipo: "FEEDBACK"
                   };
                   crearComentario("FEEDBACK", val);
                 }}

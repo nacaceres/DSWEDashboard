@@ -2,22 +2,24 @@ import React from "react";
 import "./Teamwork.css";
 
 class Teamwork extends React.Component {
-  renderInfo = (task) => {
+  renderInfo = task => {
     if (
       this.props.usuario !== null &&
       this.props.usuario.rol === "ESTUDIANTE"
     ) {
-      return <td 
-      onClick={() => {
-        var val = {
-          id: task.taskId,
-          tipo:"TEAMWORK"
-        };
-        this.props.crearComentario("TEAMWORK", val);
-      }}
-    >
-      <i className="fas fa-comment-medical "></i>
-    </td>;
+      return (
+        <td
+          onClick={() => {
+            var val = {
+              id: task.taskId,
+              tipo: "TEAMWORK"
+            };
+            this.props.crearComentario("TEAMWORK", val);
+          }}
+        >
+          <i className="fas fa-comment-medical "></i>
+        </td>
+      );
     }
   };
 
