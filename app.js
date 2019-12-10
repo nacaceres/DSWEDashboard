@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var app = express();
 
 // view engine setup
+// sguzmanm: Why are you keeping these jade views? I though the UI was built using react
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
