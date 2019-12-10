@@ -2,7 +2,7 @@
 Una página web que contiene el estado de los proyectos que se estan llevando a cabo en el curso Desarrollo de Software en equipo, ofrecido por el Dpto de Ing de sistemas y computación de la Universidad de los Andes.   
 Dentro de la pagina se puede: Consultar el estado del proyecto en herramientas como Sonarqube, Jenkins, Teamwork, Git inspector, entre otras. Además, los estudiantes pueden realizar comentarios sobre feedback que se le ha dado sobre sus proyectos y los profesores o monitores del curso podran contestar estos comentarios.
 # ScreenShot
-![Screenshot Pag Web](https://raw.githubusercontent.com/nacaceres/CriticaVisualizacion/master/SIC_Principal.png)
+![Screenshot Pag Web](https://raw.githubusercontent.com/nacaceres/CriticaVisualizacion/master/DSWEFINAL.png)
 # Link a la página del proyecto   
 http://157.253.238.75:8082
 # Tecnologias usadas
@@ -67,6 +67,12 @@ En caso de no tener configurada la BD con replica, en una nueva terminal se debe
 ```
 mongo
 rs.initiate()
+```
+# Autenticación
+La autenticación de los usuarios se realizo mediante el protocolo ldap, para configurar la estrategia se debe ingresar en la línea 9 del index.js, la URL donde esta el servidor ldap.
+Ejemplo:
+```
+url: "ldap://localhost:389",
 ```
 # Requerimientos como desarrollador
 El proyecto tiene una dependencia como desarrollador hacia [eslint](https://eslint.org), esta dependencia se encarga de revisar la sintaxis del codigo en JS bajo la reglas definidas en el archivo [.eslintrc.js]
