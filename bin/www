@@ -64,7 +64,7 @@ let refreshGrupos = secciones => {
               myMongoLib
                 .postGrupo(grupoJSON)
                 .then(docs => {
-                  console.log("OK"+grupo)
+                  console.log("OK" + grupo);
                   refreshGrupos(secciones);
                 })
                 .catch(err => {
@@ -73,14 +73,14 @@ let refreshGrupos = secciones => {
             })
             .catch(err => {
               myMongoLib
-              .postGrupo(grupoJSON)
-              .then(docs => {
-                console.log("OKDel"+grupo)
-                refreshGrupos(secciones);
-              })
-              .catch(err => {
-                console.log(err);
-              });
+                .postGrupo(grupoJSON)
+                .then(docs => {
+                  console.log("OKDel" + grupo);
+                  refreshGrupos(secciones);
+                })
+                .catch(err => {
+                  console.log(err);
+                });
             });
         } else {
           console.log("FALLOO");
@@ -153,16 +153,16 @@ function onError(error) {
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
-    case "EACCES":
-      console.error(bind + " requires elevated privileges");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      console.error(bind + " is already in use");
-      process.exit(1);
-      break;
-    default:
-      throw error;
+  case "EACCES":
+    console.error(bind + " requires elevated privileges");
+    process.exit(1);
+    break;
+  case "EADDRINUSE":
+    console.error(bind + " is already in use");
+    process.exit(1);
+    break;
+  default:
+    throw error;
   }
 }
 
