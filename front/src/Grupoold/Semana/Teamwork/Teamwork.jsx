@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"; // sguzmanm: Why not refactor using React hooks?
 import { Card } from "react-bootstrap";
 import "./Teamwork.css";
 

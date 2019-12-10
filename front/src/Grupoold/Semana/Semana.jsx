@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"; // sguzmanm: Why not refactor with React hooks?
 import { Card } from "react-bootstrap";
 import "./Semana.css";
 import Teamwork from "./Teamwork/Teamwork.jsx";
@@ -12,7 +12,7 @@ class Semana extends React.Component {
   }
 
   renderNota = nota => {
-    let color = "red";
+    let color = "red"; // sguzmanm: These colors could be constants. It would be better this way
     if (nota > 2) {
       color = "orange";
     }
@@ -29,7 +29,7 @@ class Semana extends React.Component {
     if (
       this.props.semana.feedback.preguntasGrupales !== undefined &&
       this.props.semana.feedback.preguntasGrupales.length > 0
-    ) {
+    ) { // sguzmanm: Refactor this if condition to a function and please avoid nested ifs by using returns
       return (
         <div>
           <div className="row text-center">
@@ -86,7 +86,7 @@ class Semana extends React.Component {
     if (
       this.props.semana.feedback.individuales !== undefined &&
       this.props.semana.feedback.individuales.length > 0
-    ) {
+    ) { // sguzmanm: Refactor this if condition to a function and please avoid nested ifs by using returns
       return (
         <div>
           {this.props.semana.feedback.individuales.map(individual => {
@@ -218,7 +218,7 @@ class Semana extends React.Component {
           {this.renderIndividuales()}
         </div>
       );
-    } else {
+    } else { // sguzmanm: Avoid these nested conditions. The else is unnecessary since you are already returning data on the previous condition
       return <div className="infoFail">No hubo Feedback</div>;
     }
   };
@@ -230,7 +230,7 @@ class Semana extends React.Component {
         usuario.rol === "PROFESOR" ||
         usuario.rol === "MONITOR" ||
         (usuario.rol === "ESTUDIANTE" && semanal.correo === usuario.correo)
-      ) {
+      ) { // sguzmanm: Refactor this if condition to a function and please avoid nested ifs by using returns
         return (
           <Teamwork
             key={
@@ -322,7 +322,7 @@ class Semana extends React.Component {
     }
   };
 
-  render() {
+  render() { // sguzmanm: This is too much code for one component, find a way to refactor or modularize this
     return (
       <Card className="cardSemana" border="dark" text="white">
         <Card.Header

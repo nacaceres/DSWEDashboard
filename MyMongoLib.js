@@ -4,7 +4,7 @@ let ObjectId = require("mongodb").ObjectID;
 const MyMongoLib = function() {
   const MyMongoLib = this || {};
   // Connection URL
-  const url = "mongodb://localhost:27017";
+  const url = "mongodb://localhost:27017"; // sguzmanm: Have you considered using another url for production? Maybe an ev var would be nice here
 
   // Database Name
   const dbName = "desarrolloDB";
@@ -16,6 +16,7 @@ const MyMongoLib = function() {
     useUnifiedTopology: true
   });
 
+  // sguzmanm: This is good, but I suggest modularizing your code more, since it is not a good practice to have all your database operations on one file. You could have one file per resource. 
   MyMongoLib.getGrupo = (seccion, grupo) =>
     new Promise((resolve, reject) => {
       conn.then(client => {

@@ -1,3 +1,5 @@
+// sguzmanm: If this isn´t a PWA why keep this file?
+
 // This optional code is used to register a service worker.
 // register() is not called by default.
 

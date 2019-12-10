@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "react"; // sguzmanm: Why not refactor this with React Hooks
 import { withRouter } from "react-router-dom";
 import "./Comentarios.css";
 class Comentarios extends Component {
@@ -16,11 +16,11 @@ class Comentarios extends Component {
     this.handleCheck = this.handleCheck.bind(this);
     this.activateChat = this.activateChat.bind(this);
   }
-  componentDidUpdate() {
+  componentDidUpdate() { // sguzmanm: You can make an early return here with an if(!this.state.chat) return;
     if (this.state.chat) {
       let i;
       for (i in this.props.claims) {
-        if (this.props.claims[i]._id === this.state.id) {
+        if (this.props.claims[i]._id === this.state.id) { // sguzmanm: Please please avoid nested ifs please
           if (
             this.props.claims[i].messages.length !== this.state.messages.length
           ) {
@@ -42,7 +42,7 @@ class Comentarios extends Component {
 
     return hora + ":" + minutos + " | " + mes + " " + dia;
   }
-  fixDate2(date) {
+  fixDate2(date) { // sguzmanm: Careful with naming, this function name has no meaning or at least try to be more specific
     let lista = date.split(" ");
     let mes = lista[1];
     let dia = lista[2];
@@ -57,7 +57,7 @@ class Comentarios extends Component {
       if (
         this.state.estadoCom === "Pendiente" &&
         this.props.rol !== "ESTUDIANTE"
-      ) {
+      ) { // sguzmanm: Refactor this if condition to a function and please avoid nested ifs by using returns
         let req = {};
         req["_id"] = this.state.id;
         req["message"] = {
@@ -151,7 +151,7 @@ class Comentarios extends Component {
   }
 
   renderChat() {
-    if (this.state.chat && this.props.rol !== "ESTUDIANTE") {
+    if (this.state.chat && this.props.rol !== "ESTUDIANTE") { // sguzmanm: Refactor this if condition to a function and please avoid nested ifs by using returns
       return this.state.messages.map(d => {
         if (d.role === "ESTUDIANTE") {
           return (
