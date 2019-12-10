@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from "react"; // sguzmanm: Why not import "useState" here?
 import { Card, Form, Modal, Nav } from "react-bootstrap";
 import "./Grupo.css";
 import { withRouter } from "react-router-dom";
@@ -28,13 +28,13 @@ function Grupo(props) {
     req["id_feedback"] = id;
     let lista = []
     lista.push({
-      role:"ESTUDIANTE",
+      role:"ESTUDIANTE", // sguzmanm: Why are you assuming the rol here? Shouldn´t the back handle this responsibility with an API token or something like this?
       date:Date(),
       message:commentario
     })
     req["messages"] = lista;
     req["student"] = props.usuario.correo;
-    req["section"] = props.usuario.secciones[0].numero;
+    req["section"] = props.usuario.secciones[0].numero; // sguzmanm: Is it safe to assume that "secciones" has at least one element always?
     console.log(req);
     fetch("/addclaim", {
       method: "POST",
@@ -63,8 +63,9 @@ function Grupo(props) {
       props.match.params.seccion === 0 ||
       props.match.params.grupo === undefined ||
       props.match.params.grupo === null
-    ) {
+    ) { // sguzmanm: This if is too long, please refactor this in another function
       props.history.push("/");
+      // sguzmanm: You can make an early return here to avoid the nested ifs. Please avoid nested ifs since I can´t read this code that well
     } else {
       if (
         infoGrupo == null ||
