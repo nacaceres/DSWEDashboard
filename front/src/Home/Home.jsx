@@ -3,7 +3,7 @@ import { Card, Button, InputGroup, FormControl } from "react-bootstrap";
 import "./Home.css";
 import { withRouter } from "react-router-dom";
 
-class Home extends React.Component {
+class Home extends React.Component { // sguzmanm: This could be refactored using React Hooks to make it more readable
   constructor(props) {
     super(props);
     this.state = {
@@ -52,8 +52,8 @@ class Home extends React.Component {
           isLoading: false
         });
         if(data.error===undefined)
-        {
-        var usuario = JSON.parse(data).usuario;
+        { // sguzmanm: Be careful with linting and with all these nested ifs, tou can refactor in another function
+        var usuario = JSON.parse(data).usuario; // sguzmanm: Use let instead of var, are you sure that the data always has the attribute usuario?
         usuario.correo = username;
         if (!usuario.nombre) {
           let nombre = usuario.rol.toLowerCase();
@@ -70,7 +70,7 @@ class Home extends React.Component {
         }
       }
       else{
-        alert("Usuario o contraseña incorrectos")
+        alert("Usuario o contraseña incorrectos") // sguzmanm: Not the best idea to give feedback with alerts. Change this
       }
       });
   };
