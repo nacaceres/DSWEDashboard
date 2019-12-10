@@ -20,7 +20,7 @@ function App(props) {
 
   const [claims, setClaims] = useState([]);
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3001");
+    const ws = new WebSocket("ws://localhost:3001"); // sguzmanm: You can use an env var here, for specifying where should the user connect to
     ws.onopen = () => {
       ws.onmessage = msg => {
         if (usuario.rol !== "GUEST") {
@@ -34,6 +34,7 @@ function App(props) {
   }, [usuario, claims]);
   function setLogin(usuario) {
     setUsuario(usuario);
+    // sguzmanm: Is it safe to assume that "secciones" will always have at least one item?
     setActual({
       numero: usuario.secciones[0].numero,
       grupo: usuario.secciones[0].grupos[0]
@@ -56,7 +57,8 @@ function App(props) {
         if (data.err) {
           console.log("Hubo un error haciendo el fetch de los claims");
         }
-        else {
+        else { // sguzmanm: You can avoid this else by making an early return on the if
+          // sguzmanm: This could be another function
           data.sort(function(a, b) {
             if (a.state === "Resuelto" && (b.state === "Pendiente"||b.state === "Contestado")) {
               return 1;
@@ -77,7 +79,7 @@ function App(props) {
       });
   }
   function irAClaims() {
-    props.history.push("/comentarios");
+    props.history.push("/comentarios"); // sguzmanm: It is not bad, but react navigation now uses hooks :) check it out and it is tons easier
   }
   function irAGrupo() {
     props.history.push(
@@ -90,7 +92,7 @@ function App(props) {
   function renderGrupos(seccion) {
     return seccion.grupos.map(grupo => {
       let idGrupo =
-        "collasible-nav-dropdown-seccion-" + seccion.numero + "-" + grupo;
+        "collasible-nav-dropdown-seccion-" + seccion.numero + "-" + grupo; // sguzmanm: Why do you need such a long key? It is not even being used as a className or something on the JSX?
       if (actual.grupo === grupo) {
         return (
           <NavDropdown.Item
@@ -130,7 +132,7 @@ function App(props) {
   function renderSecciones() {
     return usuario.secciones.map(seccion => {
       let nombreSeccion = "Seccion " + seccion.numero;
-      let idSeccion = "collasible-nav-dropdown-seccion-" + seccion.numero;
+      let idSeccion = "collasible-nav-dropdown-seccion-" + seccion.numero; // sguzmanm: Why do you need such a long key? It is not even being used as a className or something on the JSX?
       if (seccion.grupos.length > 1) {
         if (actual.numero === seccion.numero) {
           return (
@@ -215,7 +217,7 @@ function App(props) {
     );
   }
 
-  function renderNav() {
+  function renderNav() { // sguzmanm: This nav is too complicated. It could be its own component
     if (usuario.rol !== "GUEST") {
       return (
         <Navbar collapseOnSelect expand="lg" bg="dark" fixed="top" variant="dark">
