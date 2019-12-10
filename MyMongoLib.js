@@ -4,7 +4,7 @@ let ObjectId = require("mongodb").ObjectID;
 const MyMongoLib = function() {
   const MyMongoLib = this || {};
   // Connection URL
-  const url = "mongodb://localhost:27017";
+  const url = "mongodb://localhost:27017"; // Have you considered using another url for production? Maybe an ev var would be nice here
 
   // Database Name
   const dbName = "desarrolloDB";
