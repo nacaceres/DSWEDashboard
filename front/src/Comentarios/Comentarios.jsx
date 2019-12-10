@@ -399,13 +399,22 @@ class Comentarios extends Component {
       if (this.state.claim.info.tipo === "FEEDBACK") {
         return (
           <div className="infoReclamo">
-            <h1>{"Tipo: " + this.state.claim.info.tipo}</h1>
+            <h1>{"Tipo: " + this.state.claim.info.tipo.toLowerCase()}</h1>
             <p className="parrafoInfo">
               <a
                 href={this.state.claim.info.encuestaEstudiantes}
                 target="_blank"
+                className="linkEncuesta comentLink"
               >
-                {this.state.claim.info.encuestaEstudiantes}
+                Encuesta Estudiantes
+              </a>
+              
+              <a
+                href={this.state.claim.info.encuestaMonitor}
+                target="_blank"
+                className="linkEncuesta"
+              >
+                Encuesta Monitor
               </a>
             </p>
           </div>
@@ -413,7 +422,7 @@ class Comentarios extends Component {
       } else if (this.state.claim.info.tipo === "TEAMWORK") {
         return (
           <div className="infoReclamo">
-            <h1>{"Tipo: " + this.state.claim.info.tipo}</h1>
+            <h1>{"Tipo: " + this.state.claim.info.tipo.toLowerCase()}</h1>
             <p className="parrafoInfo">
               <a
                 href={
@@ -421,9 +430,9 @@ class Comentarios extends Component {
                   this.state.claim.info.id
                 }
                 target="_blank"
+                className="linkEncuesta"
               >
-                {"https://uniandesedu.teamwork.com/#/tasks/" +
-                  this.state.claim.info.id}
+                Ver Task en Teamwork
               </a>
             </p>
           </div>

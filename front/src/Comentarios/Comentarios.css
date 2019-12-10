@@ -160,7 +160,7 @@ img{ max-width:100%;}
 }
 
 .infoReclamo{
-  height: 15vh;
+  height: 10vh;
   border-bottom: #343a40 solid 2px;
 }
 .seccion{
@@ -177,4 +177,7 @@ a{
 h1{
   font-size: 15px;
   text-align: center;
+}
+.linkEncuesta.comentLink{
+   margin-right: 2vh; 
 }

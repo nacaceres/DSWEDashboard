@@ -20,7 +20,7 @@ function App(props) {
 
   const [claims, setClaims] = useState([]);
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3001");
+    const ws = new WebSocket("ws://157.253.238.75:8082");
     ws.onopen = () => {
       ws.onmessage = msg => {
         if (usuario.rol !== "GUEST") {
