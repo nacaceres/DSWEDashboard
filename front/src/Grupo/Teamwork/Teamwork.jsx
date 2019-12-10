@@ -2,12 +2,22 @@ import React from "react";
 import "./Teamwork.css";
 
 class Teamwork extends React.Component {
-  renderInfo = () => {
+  renderInfo = (task) => {
     if (
       this.props.usuario !== null &&
       this.props.usuario.rol === "ESTUDIANTE"
     ) {
-      return <td>CLICK</td>;
+      return <td 
+      onClick={() => {
+        var val = {
+          id: task.taskId,
+          tipo:"TEAMWORK"
+        };
+        this.props.crearComentario("TEAMWORK", val);
+      }}
+    >
+      <i className="fas fa-comment-medical "></i>
+    </td>;
     }
   };
 
@@ -30,7 +40,7 @@ class Teamwork extends React.Component {
           <td>{task.createdOn}</td>
           <td>{task.completedOn}</td>
           <td>{task.timeLogger}</td>
-          {this.renderInfo()}
+          {this.renderInfo(task)}
         </tr>
       );
     });

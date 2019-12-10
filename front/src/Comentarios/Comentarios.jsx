@@ -32,6 +32,12 @@ class Comentarios extends Component {
       }
     }
   }
+
+  componentDidMount() {
+    if (this.props.correo === null) {
+      this.props.history.push("/");
+    }
+  }
   fixDate(date) {
     let lista = date.split(" ");
     let mes = lista[1];
@@ -140,13 +146,14 @@ class Comentarios extends Component {
     this.setState({ inputMessage: event.target.value });
   }
 
-  activateChat(idParam, messagesParam, stateParam) {
+  activateChat(idParam, messagesParam, stateParam, claim) {
     this.setState({
       chat: true,
       messages: messagesParam,
       id: idParam,
       estadoCom: stateParam,
-      inputMessage: ""
+      inputMessage: "",
+      claim: claim
     });
   }
 
@@ -252,7 +259,7 @@ class Comentarios extends Component {
               <div
                 className={this.checkMessageClass(d._id)}
                 key={d._id}
-                onClick={() => this.activateChat(d._id, d.messages, d.state)}
+                onClick={() => this.activateChat(d._id, d.messages, d.state, d)}
               >
                 <div className="chat_people">
                   <div className="chat_img">
@@ -282,7 +289,7 @@ class Comentarios extends Component {
             <div
               className={this.checkMessageClass(d._id)}
               key={d._id}
-              onClick={() => this.activateChat(d._id, d.messages, d.state)}
+              onClick={() => this.activateChat(d._id, d.messages, d.state, d)}
             >
               <div className="chat_people">
                 <div className="chat_img">
@@ -324,7 +331,7 @@ class Comentarios extends Component {
               <div
                 className={this.checkMessageClass(d._id)}
                 key={d._id}
-                onClick={() => this.activateChat(d._id, d.messages, d.state)}
+                onClick={() => this.activateChat(d._id, d.messages, d.state, d)}
               >
                 <div className="chat_people">
                   <div className="chat_img">
@@ -354,7 +361,7 @@ class Comentarios extends Component {
             <div
               className={this.checkMessageClass(d._id)}
               key={d._id}
-              onClick={() => this.activateChat(d._id, d.messages, d.state)}
+              onClick={() => this.activateChat(d._id, d.messages, d.state, d)}
             >
               <div className="chat_people">
                 <div className="chat_img">
@@ -383,59 +390,86 @@ class Comentarios extends Component {
     }
   };
   infoReclamo() {
-    if (this.state.chat) {
-      return <div>Aca va la parte de Varon</div>;
+    //FALTA PONER BONITO
+    if (this.state.chat && this.state.claim !== undefined && this.state.claim.info !== undefined) {
+      if (
+        this.state.claim.info.tipo === "FEEDBACK"
+      ) {
+        return (
+          <div className="infoReclamo">
+            {"tipo:" +
+              this.state.claim.info.tipo +
+              " " +
+              "URL: " +
+              this.state.claim.info.encuestaEstudiantes}
+          </div>
+        );
+      } else if ( 
+        this.state.claim.info.tipo === "TEAMWORK"
+      ) {
+        return (
+          <div className="infoReclamo">
+            {"tipo:" +
+              this.state.claim.info.tipo +
+              " " +
+              "URL: https://uniandesedu.teamwork.com/#/tasks/" +
+              this.state.claim.info.id}
+          </div>
+        );
+      } else {
+        return <div></div>;
+      }
     }
   }
   render() {
     return (
-        <div className=" container comentarios">
-          <div className="messaging">
-            <div className="inbox_msg">
-              <div className="inbox_people">
-                <div className="headind_srch">
-                  <div className="recent_heading">
-                    <h4>Comentarios</h4>
-                  </div>
+      <div className=" container comentarios">
+        <div className="messaging">
+          <div className="inbox_msg">
+            <div className="inbox_people">
+              <div className="headind_srch">
+                <div className="recent_heading">
+                  <h4>Comentarios</h4>
                 </div>
-                <div className="inbox_chat">{this.renderMessages()}</div>
               </div>
-              <div className="mesgs">
-                <div className="msg_history">
-                  {this.infoReclamo()}
-                  {this.renderChat()}
-                </div>
-                <div className="type_msg">
-                  <div className="input_msg_write">
-                    <form onSubmit={this.handleSubmit}>
-                      <input
-                        type="text"
-                        className="write_msg"
-                        placeholder="Type a message"
-                        value={this.state.inputMessage}
-                        onChange={this.handleChange.bind(this)}
-                      />
-                    </form>
-                    <button
-                      className="msg_send_btn"
-                      type="button"
-                      onClick={() => this.handleSubmit(this, "boton")}
-                    >
-                      <i className="fa fa-paper-plane-o" aria-hidden="true"></i>
-                    </button>
-                    <button
-                      className="resolve_btn"
-                      type="button"
-                      onClick={() => this.handleCheck(this)}
-                    >
-                      <i className="fas fa-check" aria-hidden="true"></i>
-                    </button>
-                  </div>
+              <div className="inbox_chat">{this.renderMessages()}</div>
+            </div>
+            <div className="mesgs">
+              <div className="msg_history">
+                {this.infoReclamo()}
+                {this.renderChat()}
+              </div>
+              <div className="type_msg">
+                <div className="input_msg_write">
+                  <form onSubmit={this.handleSubmit}>
+                    <input
+                      type="text"
+                      className="write_msg"
+                      placeholder="Type a message"
+                      value={this.state.inputMessage}
+                      onChange={this.handleChange.bind(this)}
+                    />
+                  </form>
+                  <button
+                    className="msg_send_btn"
+                    type="button"
+                    onClick={() => this.handleSubmit(this, "boton")}
+                  >
+                    <i className="fa fa-paper-plane-o" aria-hidden="true"></i>
+                  </button>
+                  <button
+                    className="resolve_btn"
+                    type="button"
+                    onClick={() => this.handleCheck(this)}
+                  >
+                    <i className="fas fa-check" aria-hidden="true"></i>
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
     );
   }
 }

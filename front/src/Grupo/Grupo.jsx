@@ -9,16 +9,17 @@ function Grupo(props) {
   const [modalShow, setModalShow] = React.useState(false);
   const [infoGrupo, setInfoGrupo] = React.useState(null);
   const [commentario, setCommentario] = React.useState("");
-  const [id, setId] = React.useState("");
   const [semanaActual, setSemanaActual] = React.useState(null);
   const [showEstadoActual, setShowEstadoActual] = React.useState(false);
   const [pgActual, setPgActual] = React.useState("Back");
+  const [infoComentario, setInfoComentario] = React.useState(null);
 
   function crearComentario(tipo, val) {
     if (tipo === "FEEDBACK") {
-      val.id = infoGrupo.numero + "-" + infoGrupo.grupo.nombre + "" + val.id;
+      val.id = infoGrupo.numero + "-" + infoGrupo.grupo.nombre + "-" + val.id;
     }
-    setId(val.id);
+
+    setInfoComentario(val);
     setModalShow(true);
   }
 
@@ -28,13 +29,13 @@ function Grupo(props) {
 
   function handelConfirm() {
     let req = {};
-    req["id_feedback"] = id;
     let lista = [];
     lista.push({
       role: "ESTUDIANTE",
       date: Date(),
       message: commentario
     });
+    req["info"] = infoComentario;
     req["messages"] = lista;
     req["student"] = props.usuario.correo;
     req["section"] = props.usuario.secciones[0].numero;
@@ -165,10 +166,11 @@ function Grupo(props) {
                   className="col-1 addComment"
                   onClick={() => {
                     var val = {
-                      id: semanaActual.nombre + "-" + pregunta.nombre,
+                      id: semanaActual.nombre + "-" + pregunta.pregunta,
                       encuestaEstudiantes:
                         semanaActual.feedback.encuestaEstudiantes,
-                      encuestaMonitor: semanaActual.feedback.encuestaMonitor
+                      encuestaMonitor: semanaActual.feedback.encuestaMonitor,
+                      tipo:"FEEDBACK"
                     };
                     crearComentario("FEEDBACK", val);
                   }}
@@ -553,12 +555,13 @@ function Grupo(props) {
                     id: semanaActual.nombre + "-" + pregunta.nombre,
                     encuestaEstudiantes:
                       semanaActual.feedback.encuestaEstudiantes,
-                    encuestaMonitor: semanaActual.feedback.encuestaMonitor
+                    encuestaMonitor: semanaActual.feedback.encuestaMonitor,
+                    tipo:"FEEDBACK"
                   };
                   crearComentario("FEEDBACK", val);
                 }}
               >
-                <i className="fas fa-comment-medical"></i>
+                <i className="fas fa-comment-medical "></i>
               </div>
               <div className="col-1"></div>
             </div>
@@ -586,7 +589,6 @@ function Grupo(props) {
   }
 
   function renderTeamworkIndivTarde() {
-   
     if (
       semanaActual !== null &&
       semanaActual.teamwork !== undefined &&

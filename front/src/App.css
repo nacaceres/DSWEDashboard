@@ -62,3 +62,6 @@ h1 {
   border-radius: 100%;
   margin-left: -10%;
 }
+.fa-comment-medical{
+  cursor: pointer;
+}

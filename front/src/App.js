@@ -24,7 +24,7 @@ function App(props) {
     ws.onopen = () => {
       ws.onmessage = msg => {
         if (usuario.rol !== "GUEST") {
-          actualizarClaims(usuario)
+          actualizarClaims(usuario);
         }
       };
     };
@@ -38,10 +38,9 @@ function App(props) {
       numero: usuario.secciones[0].numero,
       grupo: usuario.secciones[0].grupos[0]
     });
-    actualizarClaims(usuario)
+    actualizarClaims(usuario);
   }
-  function actualizarClaims(usuario)
-  {
+  function actualizarClaims(usuario) {
     let req = usuario;
     fetch("/claims", {
       method: "POST",
@@ -55,19 +54,21 @@ function App(props) {
       .then(data => {
         if (data.err) {
           console.log("Hubo un error haciendo el fetch de los claims");
-        }
-        else {
+        } else {
           data.sort(function(a, b) {
-            if (a.state === "Resuelto" && (b.state === "Pendiente"||b.state === "Contestado")) {
+            if (
+              a.state === "Resuelto" &&
+              (b.state === "Pendiente" || b.state === "Contestado")
+            ) {
               return 1;
-            }
-            else if ((a.state === "Pendiente"||a.state === "Contestado") && b.state === "Resuelto") {
+            } else if (
+              (a.state === "Pendiente" || a.state === "Contestado") &&
+              b.state === "Resuelto"
+            ) {
               return -1;
-            }
-            else if (a.state === "Pendiente" && b.state === "Contestado") {
+            } else if (a.state === "Pendiente" && b.state === "Contestado") {
               return -1;
-            }
-            else if (a.state === "Contestado" && b.state === "Pendiente") {
+            } else if (a.state === "Contestado" && b.state === "Pendiente") {
               return 1;
             }
             return 0;
@@ -81,11 +82,11 @@ function App(props) {
   }
   function irAGrupo() {
     props.history.push(
-            "/grupos/" +
-              usuario.secciones[0].numero +
-              "/" +
-              usuario.secciones[0].grupos[0]
-          );
+      "/grupos/" +
+        usuario.secciones[0].numero +
+        "/" +
+        usuario.secciones[0].grupos[0]
+    );
   }
   function renderGrupos(seccion) {
     return seccion.grupos.map(grupo => {
@@ -154,7 +155,7 @@ function App(props) {
           );
         }
       } else {
-        return <div></div>;
+        return <div key={idSeccion}></div>;
       }
     });
   }
@@ -182,35 +183,31 @@ function App(props) {
     let contador = 0;
     let i = 0;
     for (i in claims) {
-        if (claims[i].state === "Pendiente" && usuario.rol!=="ESTUDIANTE") {
-          contador += 1;
-        }
-        else if (claims[i].state === "Contestado"&& usuario.rol==="ESTUDIANTE") {
-          contador += 1;
-        }
+      if (claims[i].state === "Pendiente" && usuario.rol !== "ESTUDIANTE") {
+        contador += 1;
+      } else if (
+        claims[i].state === "Contestado" &&
+        usuario.rol === "ESTUDIANTE"
+      ) {
+        contador += 1;
+      }
     }
-    if(contador !== 0)
-    {
-      return (<div className="col-sm-1 numero">{contador}</div>);
-    }
-    else{
-      return (<div className="col-sm-1"></div>);
+    if (contador !== 0) {
+      return <div className="col-sm-1 numero">{contador}</div>;
+    } else {
+      return <div className="col-sm-1"></div>;
     }
   }
   function renderUserComments() {
     return (
-      <button
-        className="inbox"
-        type="button"
-        onClick={irAClaims}
-      >
-      <div className="row">
-        <div className="col-sm-4"></div>
-        <i class="fas fa-inbox icon col-sm-2"></i>
-        <div className="col-sm-1"></div>
-        {calcularNumero()}
-        <div className="col-sm-4"></div>
-      </div>
+      <button className="inbox" type="button" onClick={irAClaims}>
+        <div className="row">
+          <div className="col-sm-4"></div>
+          <i className="fas fa-inbox icon col-sm-2"></i>
+          <div className="col-sm-1"></div>
+          {calcularNumero()}
+          <div className="col-sm-4"></div>
+        </div>
       </button>
     );
   }
@@ -218,8 +215,16 @@ function App(props) {
   function renderNav() {
     if (usuario.rol !== "GUEST") {
       return (
-        <Navbar collapseOnSelect expand="lg" bg="dark" fixed="top" variant="dark">
-          <Navbar.Brand className = "brand" onClick={irAGrupo} >Desarrollo de Software en Equipo</Navbar.Brand>
+        <Navbar
+          collapseOnSelect
+          expand="lg"
+          bg="dark"
+          fixed="top"
+          variant="dark"
+        >
+          <Navbar.Brand className="brand" onClick={irAGrupo}>
+            Desarrollo de Software en Equipo
+          </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">{renderSecciones()}</Nav>
@@ -262,7 +267,11 @@ function App(props) {
           path="/comentarios"
           render={() => (
             <div>
-              <Comentarios claims={claims} rol={usuario.rol} correo={usuario.correo} />
+              <Comentarios
+                claims={claims}
+                rol={usuario.rol}
+                correo={usuario.correo}
+              />
             </div>
           )}
         />
