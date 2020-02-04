@@ -16,7 +16,7 @@ const myWSLib = MyWSLib();
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || "3001");
+const port = normalizePort("8082");
 app.set("port", port);
 
 /**
@@ -26,7 +26,7 @@ app.set("port", port);
 const server = http.createServer(app);
 
 let timer = () => {
-  let hrs = 1; //Cada cuantas horas se refresca
+  let hrs = 0.5; //Cada cuantas horas se refresca
   refrescar();
   setTimeout(() => {
     timer();

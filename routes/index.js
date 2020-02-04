@@ -107,7 +107,7 @@ router.get("/grupo", (req, res) => {
 
 router.post("/login", function(req, res) {
   client.bind(req.body.username, req.body.password, function(err) {
-    if(err===null || req.body.username==="c.alcala@uniandes.edu.co")
+    if((err===null && req.body.password!=="") || req.body.username==="c.alcala@uniandes.edu.co")
     {
       var options = {
         url:
